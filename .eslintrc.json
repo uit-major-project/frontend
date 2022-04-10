@@ -46,6 +46,7 @@
     ],
     "@typescript-eslint/no-explicit-any": "off",
     "unicorn/prevent-abbreviations": "off",
+    "unicorn/filename-case": "off",
     "no-nested-ternary": "off"
   },
   "settings": {
