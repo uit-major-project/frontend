@@ -7,6 +7,7 @@ import { SmileFilled } from '@ant-design/icons';
 
 import Link from 'next/link';
 import styled from '@emotion/styled';
+import { Launches } from '../components/Launches';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -113,6 +114,8 @@ export default function Test() {
             </Button>
           </FormItem>
         </Form>
+        <h2>Fetch data from public spaceX graphql api with apollo</h2>
+        <Launches />
       </div>
     </div>
   );
