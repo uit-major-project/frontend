@@ -3,7 +3,7 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
 };
 
 const withPlugins = require('next-compose-plugins');
@@ -12,10 +12,4 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-module.exports = withPlugins(
-  [
-    // add plugins here
-    [withBundleAnalyzer],
-  ],
-  nextConfig
-);
+module.exports = withPlugins([withBundleAnalyzer, nextConfig]);
