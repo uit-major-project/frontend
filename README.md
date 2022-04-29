@@ -11,6 +11,8 @@ cd frontend
 # make sure you are using node 16
 npm i
 
+# create a .env.local file by copying .env.sample file for variable names, contact team for variable values
+
 # run in development mode
 npm run dev
 ```
