@@ -1,3 +1,7 @@
+[Live App](https://fe-dev.herokuapp.com)
+
+Currently only dev branch is deployed with github action. Other environments are stale due to heroku [security breach](https://status.heroku.com/incidents/2413)
+
 ### Steps to run the project
 
 ```bash
