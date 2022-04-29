@@ -15,6 +15,8 @@ function createApolloClient() {
   //   : 'http://localhost:4000';
   const uri = process.env.NEXT_PUBLIC_API_URL;
 
+  console.log('uri', uri);
+
   const httpLink = new HttpLink({
     // uri: typeof window === 'undefined' ? `${uri}/api/graphql` : '/api/graphql',
     uri: `${uri}/graphql`,

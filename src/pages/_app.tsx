@@ -3,13 +3,16 @@ import 'antd/dist/antd.css';
 import '../styles/globals.css';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from '../../lib/apolloClient';
+import MainLayout from 'src/components/Layout/MainLayout';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps.initialApolloState);
 
   return (
     <ApolloProvider client={apolloClient}>
-      <Component {...pageProps} />
+      <MainLayout>
+        <Component {...pageProps} />
+      </MainLayout>
     </ApolloProvider>
   );
 }
