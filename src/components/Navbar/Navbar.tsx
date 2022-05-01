@@ -6,6 +6,7 @@ import NextLink from 'next/link';
 import { CgMenuRight } from 'react-icons/cg';
 import { Drawer } from 'antd';
 import { AiOutlineClose } from 'react-icons/ai';
+import { MdOutlineHandyman } from 'react-icons/md';
 
 const StyledNavbar = styled.nav`
   position: absolute;
@@ -14,7 +15,7 @@ const StyledNavbar = styled.nav`
   color: ${(props) => props.theme.colors.text};
   background: ${(props) => props.theme.colors.background};
   background: transparent;
-  box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.25);
   // -webkit-box-shadow: 0 6px 9px 1px rgba(0, 0, 0, 0.84);
   // -moz-box-shadow: 0 6px 9px 1px rgba(0, 0, 0, 0.84);
   font-family: ${(props) => props.theme.fontBase};
@@ -24,16 +25,22 @@ const StyledNavbar = styled.nav`
     justify-content: space-between;
     align-items: center;
     height: 100%;
-    padding: 1em 2em;
+    padding: 0.5em 2em;
     // font-size: 1.25em;
   }
 
   .title {
     // margin-left: 1em;
-    font-size: 1.75em;
-    font-weight: 500;
+    font-size: 1.5em;
+    font-weight: 600;
     color: ${(props) => props.theme.colors.text};
     cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    svg {
+      margin-right: 0.5em;
+    }
   }
 
   .nav-links {
@@ -140,7 +147,10 @@ const Navbar = ({ className, title }: Props) => {
     <StyledNavbar className={className}>
       <div className={'nav-container'}>
         <NextLink href="/" passHref>
-          <div className="title">{title}</div>
+          <div className="title">
+            <MdOutlineHandyman />
+            <span>{title}</span>
+          </div>
         </NextLink>
         <div className="nav-links">
           <NextLink href="/about">
