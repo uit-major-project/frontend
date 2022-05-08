@@ -8,6 +8,7 @@ import { userVar } from 'src/apollo/reactiveVars';
 import { Descriptions, Avatar } from 'antd';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
+import React from 'react';
 
 const StyledDiv = styled.div`
   align-items: center;
@@ -31,9 +32,11 @@ const StyledDescriptions = styled(Descriptions)`
 const Account: NextPage = () => {
   const user = useReactiveVar(userVar);
 
-  if (!Cookies.get('signedin')) {
-    Router.push('/login');
-  }
+  React.useEffect(() => {
+    if (!Cookies.get('signedin')) {
+      Router.push('/login');
+    }
+  }, []);
 
   return (
     <StyledDiv>

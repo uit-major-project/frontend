@@ -5,6 +5,8 @@ import styled from '@emotion/styled';
 import { gql, useMutation } from '@apollo/client';
 
 import { userVar } from 'src/apollo/reactiveVars';
+import Cookies from 'js-cookie';
+import Router from 'next/router';
 
 const StyledDiv = styled.div`
   display: flex;
@@ -27,7 +29,6 @@ const Login: NextPage = () => {
         lastname
         email
         image
-        role
         phone
         permanentAddress
       }
@@ -51,7 +52,7 @@ const Login: NextPage = () => {
         jwt: credential,
       },
     });
-    console.log('type', typeof credential);
+    // console.log('type', credential);
 
     // api call to check if user exits
     // if yes then login and start a session
@@ -92,6 +93,10 @@ const Login: NextPage = () => {
     script.id = 'google-script';
     document.querySelector('head')?.appendChild(script);
   }, []);
+
+  if (Cookies.get('signedin')) {
+    Router.push('/dashboard');
+  }
 
   return (
     <StyledDiv>
