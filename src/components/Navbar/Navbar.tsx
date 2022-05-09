@@ -8,7 +8,8 @@ import { Drawer } from 'antd';
 import { AiOutlineClose } from 'react-icons/ai';
 import { MdOutlineHandyman } from 'react-icons/md';
 
-import Cookies from 'js-cookie';
+import { useReactiveVar } from '@apollo/client';
+import { userVar } from 'src/apollo/reactiveVars';
 
 const StyledNavbar = styled.nav`
   position: absolute;
@@ -145,7 +146,11 @@ interface Props {
 const Navbar = ({ className, title }: Props) => {
   const [isMenuVisible, setIsMenuVisible] = React.useState(false);
 
+  const user = useReactiveVar(userVar);
+
   // console.log('isLoggedIn', Cookies.get('signedin'));
+
+  // console.log('user', user);
 
   return (
     <StyledNavbar className={className}>
@@ -156,7 +161,7 @@ const Navbar = ({ className, title }: Props) => {
             <span>{title}</span>
           </div>
         </NextLink>
-        {Cookies.get('signedin') ? (
+        {user?.email ? (
           <div className="nav-links">
             <NextLink href="/dashboard">
               <a href="/dashboard" className="nav-link">
@@ -189,7 +194,7 @@ const Navbar = ({ className, title }: Props) => {
           </div>
         )}
 
-        {Cookies.get('signedin') ? (
+        {user?.email ? (
           <div className="smallscreen-menu">
             <CgMenuRight
               fontSize={27}

@@ -2,7 +2,7 @@ import React from 'react';
 import type { NextPage } from 'next';
 
 import styled from '@emotion/styled';
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useReactiveVar } from '@apollo/client';
 
 import { userVar } from 'src/apollo/reactiveVars';
 import Cookies from 'js-cookie';
@@ -15,12 +15,16 @@ const StyledDiv = styled.div`
 `;
 
 const onCompleted = (data: any) => {
-  // document.cookie = 'token=' +
-  // console.log('user', data.loginWithGoogle);
   userVar(data.loginWithGoogle);
+
+  Cookies.set('signedin', 'true');
+
+  Router.push('/dashboard');
 };
 
 const Login: NextPage = () => {
+  const user = useReactiveVar(userVar);
+
   const LOGIN_WITH_GOOGLE = gql`
     mutation loginWithGoogle($jwt: String!) {
       loginWithGoogle(jwt: $jwt) {
@@ -45,14 +49,13 @@ const Login: NextPage = () => {
 
   const handleCredentialResponse = (credential: any) => {
     // eslint-disable-next-line unicorn/no-document-cookie
-    document.cookie = 'signedin=true';
 
     loginWithGoogle({
       variables: {
         jwt: credential,
       },
     });
-    // console.log('type', credential);
+    console.log('type', credential);
 
     // api call to check if user exits
     // if yes then login and start a session
@@ -94,7 +97,7 @@ const Login: NextPage = () => {
     document.querySelector('head')?.appendChild(script);
   }, []);
 
-  if (Cookies.get('signedin')) {
+  if (Cookies.get('signedin') && user?.email) {
     Router.push('/dashboard');
   }
 
