@@ -55,7 +55,7 @@ const Login: NextPage = () => {
         jwt: credential,
       },
     });
-    console.log('type', credential);
+    // console.log('type', credential);
 
     // api call to check if user exits
     // if yes then login and start a session
@@ -68,7 +68,7 @@ const Login: NextPage = () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       if (!window.google) return;
-      console.log(process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID);
+      // console.log(process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID);
       const options = {
         client_id: `${process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID}`,
         callback: async ({ credential }: { credential: string }) =>

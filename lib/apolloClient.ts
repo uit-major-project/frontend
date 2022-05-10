@@ -20,10 +20,12 @@ function createApolloClient() {
   const creds =
     process.env.NODE_ENV === 'development' ? {} : { credentials: 'include' };
 
+  console.log(creds, process.env.NODE_ENV);
+
   const httpLink = new HttpLink({
     // uri: typeof window === 'undefined' ? `${uri}/api/graphql` : '/api/graphql',
     uri: `${uri}/graphql`,
-    ...creds,
+    credentials: 'include',
   });
 
   return new ApolloClient({
