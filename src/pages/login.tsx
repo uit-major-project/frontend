@@ -68,7 +68,7 @@ const Login: NextPage = () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       if (!window.google) return;
-
+      console.log(process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID);
       const options = {
         client_id: `${process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID}`,
         callback: async ({ credential }: { credential: string }) =>
