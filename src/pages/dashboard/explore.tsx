@@ -10,7 +10,7 @@ import React from 'react';
 
 const StyledDiv = styled.div``;
 
-const Dashboard: NextPage = () => {
+const Explore: NextPage = () => {
   const user = useReactiveVar(userVar);
 
   React.useEffect(() => {
@@ -26,4 +26,4 @@ const Dashboard: NextPage = () => {
   );
 };
 
-export default Dashboard;
+export default Explore;

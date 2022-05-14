@@ -163,14 +163,19 @@ const Navbar = ({ className, title }: Props) => {
         </NextLink>
         {user?.email ? (
           <div className="nav-links">
-            <NextLink href="/dashboard">
-              <a href="/dashboard" className="nav-link">
-                Dashboard
+            <NextLink href="/dashboard/explore">
+              <a href="/dashboard/explore" className="nav-link">
+                Book a Task
+              </a>
+            </NextLink>
+            <NextLink href="/dashboard/active">
+              <a href="/dashboard/active" className="nav-link">
+                My Tasks
               </a>
             </NextLink>
             <NextLink href="/account">
               <a href="/account" className="nav-link">
-                My Account
+                Account
               </a>
             </NextLink>
           </div>
@@ -211,13 +216,22 @@ const Navbar = ({ className, title }: Props) => {
                 onClick={() => setIsMenuVisible(false)}
               />
               <div className="nav-smallscreen-links">
-                <NextLink href="/dashboard">
+                <NextLink href="/dashboard/explore">
                   <a
-                    href="/dashboard"
+                    href="/dashboard/explore"
                     className="nav-link"
                     onClick={() => setIsMenuVisible(false)}
                   >
-                    Dashboard
+                    Book a Task
+                  </a>
+                </NextLink>
+                <NextLink href="/dashboard/active">
+                  <a
+                    href="/dashboard/active"
+                    className="nav-link"
+                    onClick={() => setIsMenuVisible(false)}
+                  >
+                    My Tasks
                   </a>
                 </NextLink>
                 <NextLink href="/account">
@@ -226,7 +240,7 @@ const Navbar = ({ className, title }: Props) => {
                     className="nav-link"
                     onClick={() => setIsMenuVisible(false)}
                   >
-                    My Account
+                    Account
                   </a>
                 </NextLink>
               </div>

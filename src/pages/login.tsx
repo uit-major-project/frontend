@@ -19,7 +19,7 @@ const onCompleted = (data: any) => {
 
   Cookies.set('signedin', 'true');
 
-  Router.push('/dashboard');
+  Router.push('/dashboard/explore');
 };
 
 const Login: NextPage = () => {
@@ -98,7 +98,7 @@ const Login: NextPage = () => {
   }, []);
 
   if (Cookies.get('signedin') && user?.email) {
-    Router.push('/dashboard');
+    Router.push('/dashboard/explore');
   }
 
   return (

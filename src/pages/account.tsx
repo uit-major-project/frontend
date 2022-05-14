@@ -12,7 +12,8 @@ import React from 'react';
 
 const StyledDiv = styled.div`
   align-items: center;
-  padding: 8em 1em 0 1em;
+  justify-content: center;
+  padding: 1em;
   margin: 0 auto;
   max-width: 120em;
   color: ${(props) => props.theme.colors.primary};
