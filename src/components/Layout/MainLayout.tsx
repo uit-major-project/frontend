@@ -5,6 +5,8 @@ import { ThemeProvider, Global, css } from '@emotion/react';
 
 import { themes } from '../../utils/themes';
 import Navbar from '../Navbar';
+import { gql, useQuery } from '@apollo/client';
+import { userVar } from 'src/apollo/reactiveVars';
 
 const StyledMain = styled.main`
   // height: calc(100vh - 5em);
@@ -28,6 +30,41 @@ const MainLayout = (props: Props): JSX.Element => {
   const currentTheme = themes.light;
 
   const theme = currentTheme;
+
+  const GET_CURRENT_USER = gql`
+    query getCurrentUser {
+      getCurrentUser {
+        id
+        createdAt
+        updatedAt
+        firstname
+        lastname
+        email
+        image
+        phone
+        permanentAddress
+        tasks {
+          id
+        }
+      }
+    }
+  `;
+
+  const { data, error, loading } = useQuery(GET_CURRENT_USER);
+
+  if (error) {
+    console.error('error fetching current user', error);
+  }
+
+  if (loading) {
+    console.log('fetching current user...');
+  }
+
+  React.useEffect(() => {
+    if (data && data.getCurrentUser) {
+      userVar(data.getCurrentUser);
+    }
+  }, [data]);
 
   return (
     <>
