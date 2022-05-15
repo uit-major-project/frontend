@@ -7,6 +7,7 @@ import { useReactiveVar } from '@apollo/client';
 
 import { userVar } from 'src/apollo/reactiveVars';
 import React from 'react';
+import BookTask from 'src/components/BookTask';
 
 const StyledDiv = styled.div``;
 
@@ -21,7 +22,7 @@ const Explore: NextPage = () => {
 
   return (
     <StyledDiv>
-      <p>Book your task {user?.firstname}</p>
+      <BookTask title="Book Your Next Task" />
     </StyledDiv>
   );
 };
