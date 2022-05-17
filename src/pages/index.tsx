@@ -10,7 +10,7 @@ const StyledDiv = styled.div``;
 
 const Home: NextPage = () => {
   React.useEffect(() => {
-    if (Cookies.get('signedin')) {
+    if (Cookies.get('jwt')) {
       Router.push('/dashboard/explore');
     }
   }, []);
