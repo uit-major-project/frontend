@@ -19,7 +19,7 @@ const Active: NextPage = () => {
   // const user = useReactiveVar(userVar);
 
   React.useEffect(() => {
-    if (!Cookies.get('jwt')) {
+    if (!Cookies.get('signedin')) {
       Router.push('/login');
     }
   }, []);

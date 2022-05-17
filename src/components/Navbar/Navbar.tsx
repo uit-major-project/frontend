@@ -10,7 +10,6 @@ import { MdOutlineHandyman } from 'react-icons/md';
 
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from 'src/apollo/reactiveVars';
-import Cookies from 'js-cookie';
 
 const StyledNavbar = styled.nav`
   position: absolute;
@@ -162,7 +161,7 @@ const Navbar = ({ className, title }: Props) => {
             <span>{title}</span>
           </div>
         </NextLink>
-        {Cookies.get('jwt') ? (
+        {user?.email ? (
           <div className="nav-links">
             <NextLink href="/dashboard/explore">
               <a href="/dashboard/explore" className="nav-link">
@@ -200,7 +199,7 @@ const Navbar = ({ className, title }: Props) => {
           </div>
         )}
 
-        {Cookies.get('jwt') ? (
+        {user?.email ? (
           <div className="smallscreen-menu">
             <CgMenuRight
               fontSize={27}
