@@ -61,6 +61,7 @@ const MainLayout = (props: Props): JSX.Element => {
   }
 
   React.useEffect(() => {
+    console.log('user', data?.getCurrentUser);
     if (data && data.getCurrentUser) {
       userVar(data.getCurrentUser);
     }
