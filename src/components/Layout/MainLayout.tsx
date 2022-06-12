@@ -11,7 +11,7 @@ import { userVar } from 'src/apollo/reactiveVars';
 const StyledMain = styled.main`
   // height: calc(100vh - 5em);
   width: 100%;
-  margin-top: 5em;
+  margin-top: 3.5em;
 `;
 
 const MainLayoutContainer = styled.div`

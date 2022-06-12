@@ -5,12 +5,16 @@ import type { NextPage } from 'next';
 
 import styled from '@emotion/styled';
 import Cookies from 'js-cookie';
+import { userVar } from 'src/apollo/reactiveVars';
+import { useReactiveVar } from '@apollo/client';
 
 const StyledDiv = styled.div``;
 
 const Home: NextPage = () => {
+  const user = useReactiveVar(userVar);
+
   React.useEffect(() => {
-    if (Cookies.get('signedin')) {
+    if (Cookies.get('signedin') && user) {
       Router.push('/dashboard/explore');
     }
   }, []);

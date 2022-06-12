@@ -10,4 +10,6 @@ export interface User {
   permanentAddress?: string;
 
   bookings?: [any];
+
+  tasks: any;
 }

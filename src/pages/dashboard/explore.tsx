@@ -15,7 +15,7 @@ const Explore: NextPage = () => {
   const user = useReactiveVar(userVar);
 
   React.useEffect(() => {
-    if (!Cookies.get('signedin')) {
+    if (!Cookies.get('signedin') || !user) {
       Router.push('/login');
     }
   }, []);

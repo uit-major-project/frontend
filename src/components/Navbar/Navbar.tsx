@@ -10,7 +10,7 @@ import { MdOutlineHandyman } from 'react-icons/md';
 
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from 'src/apollo/reactiveVars';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 
 const StyledNavbar = styled.nav`
   position: absolute;
@@ -56,9 +56,23 @@ const StyledNavbar = styled.nav`
     cursor: pointer;
     color: ${(props) => props.theme.colors.text};
     margin: 0 0 0 2em;
+    border-bottom: 2px solid transparent;
+    font-weight: 500;
+
+    &:after {
+      display: block;
+      content: '';
+      border-bottom: 3px solid ${(props) => props.theme.colors.accent};
+      transition: all 0.2s ease-in-out;
+      transform: scaleX(0);
+    }
   }
   .nav-link: hover {
-    border-bottom: 2px solid ${(props) => props.theme.colors.accent};
+    &:after {
+      transform: scaleX(1);
+    }
+    // outline-bottom: 3px solid ${(props) => props.theme.colors.accent};
+    // color: ${(props) => props.theme.colors.accent};
   }
 
   .smallscreen-menu {
@@ -133,9 +147,22 @@ const StyledDrawer = styled(Drawer)`
     cursor: pointer;
     color: ${(props) => props.theme.colors.text};
     margin: 0.5em 0;
+    font-weight: 500;
+
+    &:after {
+      display: block;
+      content: '';
+      border-bottom: 3px solid ${(props) => props.theme.colors.accent};
+      transition: all 0.2s ease-in-out;
+      transform: scaleX(0);
+    }
   }
   .nav-link: hover {
-    border-bottom: 2px solid ${(props) => props.theme.colors.accent};
+    &: after {
+      transform: scaleX(1);
+    }
+    // border-bottom: 3px solid ${(props) => props.theme.colors.accent};
+    // color: ${(props) => props.theme.colors.accent};
   }
 `;
 
