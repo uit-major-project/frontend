@@ -58,6 +58,7 @@ const StyledNavbar = styled.nav`
     margin: 0 0 0 2em;
     border-bottom: 2px solid transparent;
     font-weight: 500;
+    display: flex;
 
     &:after {
       display: block;

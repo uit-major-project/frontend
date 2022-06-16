@@ -8,10 +8,60 @@ import { userVar } from 'src/apollo/reactiveVars';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
 
+import h2 from '../../public/img/h2.jpg';
+
 const StyledDiv = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  // flex-direction: column;
+  // align-items: center;
+
+  .login-content-container {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    // height: 100%;
+    align-items: center;
+    // justify-content: center;
+    margin: 0 auto;
+  }
+
+  .login-image-container {
+    width: 70%;
+    height: 100%;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+
+    position: relative;
+  }
+  .login-image-container: after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    // background: #fff;
+    opacity: 0.5;
+    background-image: linear-gradient(
+      to left,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 1) 70%
+    );
+    // background: linear-gradient(90deg, transparent, #fff 10%);
+  }
+
+  p {
+    margin: 30% 0 0.75em 0;
+    letter-spacing: 0.1rem;
+    font-size: 1.5rem;
+    font-weight: 200;
+    text-transform: uppercase;
+  }
 `;
 
 const onCompleted = (data: any) => {
@@ -103,9 +153,14 @@ const Login: NextPage = () => {
 
   return (
     <StyledDiv>
-      <h1>Handy Services</h1>
-      <p>Login / Sign up</p>
-      <div id="buttonDiv"></div>
+      {/* <h1>Handy Services</h1> */}
+      <div className="login-content-container">
+        <p>Login / Sign up</p>
+        <div id="buttonDiv"></div>
+      </div>
+      <div className="login-image-container">
+        <img src={h2.src} alt="" />
+      </div>
     </StyledDiv>
   );
 };

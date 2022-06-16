@@ -9,10 +9,11 @@ import Router from 'next/router';
 import React from 'react';
 import EmptyDisplay from 'src/components/EmptyDisplay';
 
-import { RiTodoLine } from 'react-icons/ri';
+// import { RiTodoLine } from 'react-icons/ri';
 import { gql, useQuery, useReactiveVar } from '@apollo/client';
 import { userVar } from 'src/apollo/reactiveVars';
-import { tasks } from 'data/tasks';
+// import { tasks } from 'data/tasks';
+import { MdOutlineTaskAlt } from 'react-icons/md';
 
 const StyledDiv = styled.div`
   padding: 3rem;
@@ -79,7 +80,7 @@ const Active: NextPage = () => {
         </div>
       ) : (
         <EmptyDisplay
-          icon={<RiTodoLine />}
+          icon={<MdOutlineTaskAlt />}
           title="Have something you want to get done?"
           action={bookingAction}
         />

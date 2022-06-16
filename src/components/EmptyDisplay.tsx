@@ -11,20 +11,31 @@ const StyledDiv = styled.div`
 
   .icon {
     svg {
-      width: 5em;
-      height: 5em;
+      width: 4.5em;
+      height: 4.5em;
     }
   }
 
   .title {
-    margin: 1em;
     font-size: 1.5em;
+    font-weight: 500;
+    margin-top: 16px;
   }
 
   .action-link {
-    padding: 0.5em 1em;
-    background: ${(props) => props.theme.colors.primary};
-    color: ${(props) => props.theme.colors.text};
+    margin: 1em;
+    font-size: 1.5em;
+    text-decoration: none;
+    color: ${(props) => props.theme.colors.background};
+    background-color: ${(props) => props.theme.colors.primary};
+    padding: 0.25em 2em;
+    border-radius: 1em;
+  }
+
+  .action-link:hover {
+    background-color: ${(props) => props.theme.colors.background};
+    border: 1px solid ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.primary};
   }
 `;
 
