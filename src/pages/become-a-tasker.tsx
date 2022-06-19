@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 import Router from 'next/router';
 import React from 'react';
 
-import h3 from '../../public/img/h3.jpg';
+// import h3 from '../../public/img/h3.jpg';
 
 const StyledDiv = styled.div`
   height: calc(100vh - 3.5em);
@@ -22,9 +22,9 @@ const StyledDiv = styled.div`
   .tasker-content-container {
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 100%;
     height: 100%;
-    // align-items: center;
+    align-items: center;
     // justify-content: center;
     margin: 0 auto;
     padding: 0 1.25em 0 1.5em;
@@ -48,17 +48,17 @@ const StyledDiv = styled.div`
     }
   }
 
-  .tasker-image-container {
-    width: 50%;
-    height: 100%;
+  // .tasker-image-container {
+  //   width: 50%;
+  //   height: 100%;
 
-    img {
-      width: 100%;
-      height: 100%;
-    }
+  //   img {
+  //     width: 100%;
+  //     height: 100%;
+  //   }
 
-    // position: relative;
-  }
+  //   // position: relative;
+  // }
   // .tasker-image-container: after {
   //   content: '';
   //   position: absolute;
@@ -190,9 +190,9 @@ const BecomeATasker: NextPage = () => {
         <p>Earn upto Rs. 50,000 on Handy Services</p>
         <div id="buttonDivTasker"></div>
       </div>
-      <div className="tasker-image-container">
+      {/* <div className="tasker-image-container">
         <img src={h3.src} alt="" />
-      </div>
+      </div> */}
     </StyledDiv>
   );
 };

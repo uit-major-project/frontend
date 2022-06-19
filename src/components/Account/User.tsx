@@ -10,6 +10,11 @@ import { Descriptions, Avatar, Menu, Divider, MenuProps } from 'antd';
 // import Router from 'next/router';
 import React from 'react';
 
+import isEqual from 'lodash.isequal';
+
+import { useForm } from 'react-hook-form';
+import { User } from 'src/utils/types';
+
 const StyledDiv = styled.div`
   // background: #efefef;
   display: flex;
@@ -18,28 +23,89 @@ const StyledDiv = styled.div`
   justify-content: center;
   padding: 1em;
   margin: 0 auto;
+  width: 90%;
   max-width: 120em;
   color: ${(props) => props.theme.colors.primary};
 
   .container {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    align-items: center;
   }
 
   .container-account-section {
     display: flex;
     align-items: center;
-    // padding: 1em 0;
-    border: 1px solid #000;
-  }
+    width: 100%;
+    .task-details-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
 
-  .main-account-section {
-    // display: flex;
+      .step-heading {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+      }
 
-    padding: 1em;
+      .form-container {
+        width: 100%;
+        max-width: 500px;
 
-    max-width: 40em;
-    border-left: 1px solid #000;
+        .profile-image {
+          display: flex;
+          justify-content: center;
+          img {
+            border-radius: 50%;
+            margin: 1rem;
+          }
+        }
+
+        form {
+          input,
+          textarea {
+            width: 100%;
+            outline: none;
+            border: 1px solid #ccc;
+            margin-bottom: 1rem;
+            color: #333;
+            padding: 0.5em 1em;
+          }
+
+          select {
+            width: 100%;
+            outline: none;
+            border: 1px solid #ccc;
+
+            option {
+              background-color: #f5f5f5;
+            }
+          }
+
+          button {
+            width: 100%;
+            background: ${(props) => props.theme.colors.primary};
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            border-radius: 5px;
+          }
+
+          button:disabled,
+          button[disabled] {
+            border: 1px solid #999999;
+            background-color: #cccccc;
+            color: #666666;
+          }
+        }
+      }
+    }
   }
 `;
 
@@ -70,53 +136,122 @@ const onClick: MenuProps['onClick'] = (e) => {
   console.log('click', e);
 };
 
-const UserAccount = (user: any) => {
+const UserAccount = ({ user }: { user: User }) => {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm();
+  // const [userDetails, setUserDetails] = React.useState(user);
+
+  // const [hasDetailsChanges, setHasDetailsChanged] = React.useState(false);
+
+  // console.log('userDetails', userDetails);
+
+  // const checkUserDetailsEquality = () => {
+  //   // console.log('isEqual', isEqual(userDetails, user));
+  //   // return isEqual(userDetails, user);
+  // };
+
+  // eslint-disable-next-line unicorn/consistent-function-scoping
+  const onSubmit = (values: any) => {
+    console.log('values', values);
+    // setUserDetails({ ...userDetails, ...values });
+  };
+
+  // console.log(user);
   return (
     <StyledDiv>
       <div className="container">
-        <h2>Your Account</h2>
+        {/* <h2>Your Account</h2> */}
 
         <div className="container-account-section">
-          <div className="account-menu">
-            <Menu
-              items={items}
-              onClick={onClick}
-              style={{ width: 200 }}
-              defaultSelectedKeys={['1']}
-              defaultOpenKeys={['sub1']}
-              mode="inline"
-            />
-          </div>
+          <div className="task-details-container">
+            {/* <h2 className="step-heading">Task Description</h2> */}
+            <div className="form-container">
+              {/* <p className="task-category">{taskCategory.toUpperCase()}</p> */}
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="profile-image">
+                  <img src={user.image} alt="" />
+                </div>
 
-          <div className="main-account-section">
-            {user?.image ? (
-              <Avatar
-                size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
-                src={user?.image}
-              />
-            ) : (
-              <Avatar size={'large'}>{user?.firstname[0]}</Avatar>
-            )}
+                <input
+                  type="text"
+                  {...register('firstname', {
+                    required: 'Required',
+                    // pattern: {
+                    //   value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/i,
+                    //   message: 'invalid email address',
+                    // },
+                  })}
+                  value={user.firstname}
+                  placeholder="firstname"
+                />
+                <br />
+                {errors.firstname && errors.firstname.message}
 
-            <Divider type="vertical" />
+                <input
+                  type="text"
+                  {...register('lastname', {
+                    required: 'Required',
+                    // pattern: {
+                    //   value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/i,
+                    //   message: 'invalid email address',
+                    // },
+                  })}
+                  value={user.lastname}
+                  placeholder="lastname"
+                />
+                <br />
+                {errors.lastname && errors.lastname.message}
 
-            <StyledDescriptions>
-              <Descriptions.Item label="Name" span={3}>
-                {user?.firstname} {user?.lastname}
-              </Descriptions.Item>
-              <Descriptions.Item label="Email" span={3}>
-                {user?.email ?? user?.email}
-              </Descriptions.Item>
-              <Descriptions.Item label="Phone" span={3}>
-                {user?.phone ? user.phone : 'please add a phone number'}
-              </Descriptions.Item>
-              {/* <Descriptions.Item label="Remark">empty</Descriptions.Item> */}
-              <Descriptions.Item label="Address" span={3}>
-                {user?.permanentAddress
-                  ? user.permanentAddress
-                  : 'please add your permanent address'}
-              </Descriptions.Item>
-            </StyledDescriptions>
+                <input
+                  type="email"
+                  {...register('email', {
+                    required: 'Required',
+                    // validate: (value) => value !== 'admin' || 'Nice try!',
+                  })}
+                  placeholder="Email..."
+                  value={user.email}
+                />
+                <br />
+                {errors.email && errors.email.message}
+
+                <input
+                  type="text"
+                  {...register('phone', {
+                    required: 'Required',
+                    // pattern: {
+                    //   value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/i,
+                    //   message: 'invalid email address',
+                    // },
+                  })}
+                  value={user.phone}
+                  placeholder="Your phone number..."
+                />
+                <br />
+                {errors.phone && errors.phone.message}
+
+                <textarea
+                  {...register('address', {
+                    required: 'Required',
+                    // pattern: {
+                    //   value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/i,
+                    //   message: 'invalid email address',
+                    // },
+                  })}
+                  value={user.permanentAddress}
+                  placeholder="Address..."
+                />
+                <br />
+                {errors.lastname && errors.lastname.message}
+
+                <br />
+                <button type="submit" disabled={false}>
+                  Update Details
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>

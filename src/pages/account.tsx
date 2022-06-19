@@ -77,13 +77,20 @@ const Account: NextPage = () => {
 
   const person: any = useReactiveVar(person_var as any);
 
-  console.log({ person });
+  console.log('person', { person });
 
-  React.useEffect(() => {
-    if (!Cookies.get('signedin') && !Cookies.get('signedin_as_tasker')) {
-      Router.push('/login');
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   if (!Cookies.get('signedin') && !Cookies.get('signedin_as_tasker')) {
+  //     Router.push('/login');
+  //   }
+  // }, []);
+
+  if (
+    (!Cookies.get('signedin') && !Cookies.get('signedin_as_tasker')) ||
+    !person
+  ) {
+    typeof window !== 'undefined' && Router.push('/login');
+  }
 
   return (
     <StyledDiv>

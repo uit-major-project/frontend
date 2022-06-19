@@ -8,11 +8,6 @@ import { Drawer } from 'antd';
 import { AiOutlineClose } from 'react-icons/ai';
 import { MdOutlineHandyman } from 'react-icons/md';
 
-import { useReactiveVar } from '@apollo/client';
-import { userVar } from 'src/apollo/reactiveVars';
-import UserLoggedInNav from './LoggedIn/UserNav';
-import CommonNav from './Common/CommonNav';
-import Cookies from 'js-cookie';
 // import Cookies from 'js-cookie';
 
 const StyledNavbar = styled.nav`
@@ -175,24 +170,84 @@ interface Props {
   title: string;
 }
 
-const Navbar = ({ className, title }: Props) => {
-  // const [isMenuVisible, setIsMenuVisible] = React.useState(false);
-
-  const user = useReactiveVar(userVar);
-
-  // console.log('isLoggedIn', Cookies.get('signedin'));
-
-  // console.log('user', user);
+const CommonNav = ({ className, title }: Props) => {
+  const [isMenuVisible, setIsMenuVisible] = React.useState(false);
 
   return (
     <StyledNavbar className={className}>
-      {user &&
-      (Cookies.get('signedin') || Cookies.get('signedin_as_tasker')) ? (
-        <UserLoggedInNav user={user} title="Handy Services" />
-      ) : (
-        <CommonNav title="Handy Services" />
-      )}
+      <div className={'nav-container'}>
+        <NextLink href="/" passHref>
+          <div className="title">
+            <MdOutlineHandyman />
+            <span>{title}</span>
+          </div>
+        </NextLink>
+        <div className="nav-links">
+          <NextLink href="/about">
+            <a href="/about" className="nav-link">
+              About Us
+            </a>
+          </NextLink>
+          <NextLink href="/login">
+            <a href="/login" className="nav-link">
+              Sign up / Log in
+            </a>
+          </NextLink>
+          <NextLink href="/become-a-tasker">
+            <a href="/become-a-tasker" className="nav-link">
+              Become a Tasker
+            </a>
+          </NextLink>
+        </div>
+
+        <div className="smallscreen-menu">
+          <CgMenuRight
+            fontSize={27}
+            onClick={() => setIsMenuVisible(!isMenuVisible)}
+            className="overlay-close"
+          />
+          <StyledDrawer
+            visible={isMenuVisible}
+            closable={false}
+            onClose={() => setIsMenuVisible(false)}
+          >
+            <AiOutlineClose
+              className="close-icon"
+              onClick={() => setIsMenuVisible(false)}
+            />
+            <div className="nav-smallscreen-links">
+              <NextLink href="/about">
+                <a
+                  href="/about"
+                  className="nav-link"
+                  onClick={() => setIsMenuVisible(false)}
+                >
+                  About Us
+                </a>
+              </NextLink>
+              <NextLink href="/login">
+                <a
+                  href="/login"
+                  className="nav-link"
+                  onClick={() => setIsMenuVisible(false)}
+                >
+                  Sign up / Log in
+                </a>
+              </NextLink>
+              <NextLink href="/become-a-tasker">
+                <a
+                  href="/become-a-tasker"
+                  className="nav-link"
+                  onClick={() => setIsMenuVisible(false)}
+                >
+                  Become a Tasker
+                </a>
+              </NextLink>
+            </div>
+          </StyledDrawer>
+        </div>
+      </div>
     </StyledNavbar>
   );
 };
-export default Navbar;
+export default CommonNav;
