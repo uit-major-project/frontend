@@ -23,7 +23,7 @@ const StyledTopbar = styled.nav`
     justify-content: space-between;
     align-items: center;
     text-align: center;
-    min-width: 60em;
+    // min-width: 60em;
     font-family: ${(props) => props.theme.colors.text};
     box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.25);
     position: relative;
@@ -39,7 +39,7 @@ const StyledTopbar = styled.nav`
   }
   .title {
     // margin-left: 1em;
-    font-size: 1.5em;
+    font-size: 1.25em;
     font-weight: 600;
     color: ${(props) => props.theme.colors.text};
     cursor: pointer;
@@ -56,7 +56,7 @@ const StyledTopbar = styled.nav`
     justify-content: space-around;
     align-items: center;
     text-align: center;
-    min-width: 12em;
+    // min-width: 12em;
     height: 100%;
   }
   .items {
@@ -85,6 +85,7 @@ const StyledTopbar = styled.nav`
     }
   }
   .avatar {
+    margin-left: 0.5em;
     padding: 0.25em;
     img {
       width: 3em;

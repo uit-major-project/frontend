@@ -12,22 +12,22 @@ const StyledDiv = styled.div`
   justify-content: center;
 
   h1 {
-    font-size: 2em;
+    font-size: 1.5em;
     font-weight: bold;
-    margin: 2em 0 0.75em 0;
+    margin: 1em 0 0.75em 0;
     letter-spacing: 0.25rem;
   }
   select {
     // padding: 0.5em;
     width: 100%;
     height: 2.5em;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 200;
     text-transform: uppercase;
     margin: 0 0 1.5em 0;
 
     option {
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: 200;
       text-transform: uppercase;
     }
