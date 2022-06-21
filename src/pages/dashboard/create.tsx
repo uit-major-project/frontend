@@ -14,6 +14,7 @@ import { gql, useQuery, useReactiveVar } from '@apollo/client';
 import { userVar, taskCategoryVar } from 'src/apollo/reactiveVars';
 
 import { useForm } from 'react-hook-form';
+import { DatePicker, TimePicker, notification } from 'antd';
 
 const StyledDiv = styled.div`
   padding: 3rem;
@@ -140,7 +141,51 @@ const StyledDiv = styled.div`
       }
     }
   }
+  .time-selector {
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    // justify-content: center;
+    margin-top: 1rem;
+
+    h1 {
+      font-weight: 200;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    // antpicker {
+    //   width: 10em;
+    //   max-width: 500px;
+    // }
+  }
+
+  .action-buttons {
+    button {
+      padding: 0.5em 1em;
+      width: 10em;
+      border: none;
+      border-radius: 0.25em;
+      margin-top: 1em;
+      color: ${(props) => props.theme.colors.text};
+      border: 0.1em solid ${(props) => props.theme.colors.primary};
+
+      &: hover {
+        background: ${(props) => props.theme.colors.primary};
+      }
+    }
+  }
 `;
+
+const openNotification = () => {
+  notification.open({
+    message: 'Task created successfully',
+    description:
+      'The task has been created successfully, the tasker will get back to you in a while',
+    onClick: () => {
+      console.log('Notification Clicked!');
+    },
+  });
+};
 
 interface TaskDetails {
   address?: string;
@@ -301,6 +346,16 @@ const TaskerSelection = ({
   );
 };
 
+const TimeSelector = () => {
+  return (
+    <div className="time-selector">
+      <h1>Select meeting time</h1>
+      <DatePicker />
+      <TimePicker />
+    </div>
+  );
+};
+
 const Create: NextPage = () => {
   const user = useReactiveVar(userVar);
   const [currentStep, setCurrentStep] = React.useState(1);
@@ -357,7 +412,7 @@ const Create: NextPage = () => {
 
   console.log('task', task);
 
-  const TimeSelction = <div>Time Selection</div>;
+  // const TimeSelction = <div>Time Selection</div>;
 
   const Confirmation = <div>Confirmation</div>;
 
@@ -398,7 +453,7 @@ const Create: NextPage = () => {
       break;
     }
     case 3: {
-      currentComponent = TimeSelction;
+      currentComponent = <TimeSelector />;
 
       break;
     }
@@ -422,22 +477,34 @@ const Create: NextPage = () => {
     <StyledDiv>
       <></>
       {currentComponent}
-      {currentStep < steps.length && currentStep !== 1 && currentStep !== 2 && (
-        <button onClick={() => next()}>Next</button>
-      )}
-      {currentStep === steps.length && (
-        <button
-        // type="primary"
-        // onClick={() => message.success('Processing complete!')}
-        >
-          Done
-        </button>
-      )}
-      {currentStep > 1 && (
-        <button style={{ margin: '0 8px' }} onClick={() => prev()}>
-          Previous
-        </button>
-      )}
+      <div className="action-buttons">
+        {currentStep < steps.length &&
+          currentStep !== 1 &&
+          currentStep !== 2 &&
+          currentStep !== 3 && (
+            <button className="next-btn" onClick={() => next()}>
+              Next
+            </button>
+          )}
+        {currentStep === steps.length - 1 && (
+          <button
+            // type="primary"
+            onClick={openNotification}
+            className="confirm-btn"
+          >
+            Confirm
+          </button>
+        )}
+        {currentStep > 1 && (
+          <button
+            className="prev-btn"
+            style={{ margin: '0 8px' }}
+            onClick={() => prev()}
+          >
+            Previous
+          </button>
+        )}
+      </div>
     </StyledDiv>
   );
 };
