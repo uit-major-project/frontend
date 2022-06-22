@@ -26,6 +26,26 @@ export enum TaskType {
   driver = 'driver',
   technician = 'technician',
 }
+export enum TaskSize {
+  small = 'small',
+  medium = 'medium',
+  large = 'large',
+}
+
+export enum TaskStatus {
+  open = 'open',
+  in_progress = 'in_progress',
+  done = 'done',
+  cancelled = 'cancelled',
+}
+
+export enum Stars {
+  one = 'one',
+  two = 'two',
+  three = 'three',
+  four = 'four',
+  five = 'five',
+}
 
 export interface Tasker {
   id: string;
@@ -51,4 +71,41 @@ export interface Tasker {
 
   inContact?: any;
   assigned?: any;
+}
+
+interface Rating {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+
+  userId: string;
+  taskId: string;
+  stars: Stars;
+  userComment?: string;
+  task: Task[];
+}
+
+export interface Task {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+
+  description: string;
+  dueDate?: string;
+  location: string;
+  pincode: string;
+  userEmail: string;
+
+  taskerInContactId?: string;
+  taskerAssignedId?: string;
+  taskerInContactEmail: string;
+  taskerAssigned?: Tasker;
+
+  size: TaskSize;
+  status: TaskStatus;
+
+  rating?: Rating;
+
+  userId?: string;
+  ratingId?: string;
 }

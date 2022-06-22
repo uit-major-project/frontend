@@ -45,6 +45,20 @@ const MainLayout = (props: Props): JSX.Element => {
         permanentAddress
         tasks {
           id
+          createdAt
+          updatedAt
+
+          description
+          dueDate
+          location
+          pincode
+
+          taskerInContact {
+            email
+          }
+
+          size
+          status
         }
       }
     }

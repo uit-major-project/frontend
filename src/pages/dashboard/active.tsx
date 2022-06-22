@@ -13,11 +13,142 @@ import EmptyDisplay from 'src/components/EmptyDisplay';
 import { gql, useQuery, useReactiveVar } from '@apollo/client';
 import { userVar } from 'src/apollo/reactiveVars';
 // import { tasks } from 'data/tasks';
-import { MdOutlineTaskAlt } from 'react-icons/md';
+import { MdOutlineTaskAlt, MdSort } from 'react-icons/md';
+
+import { useTable, useSortBy } from 'react-table';
+
+import { format } from 'date-fns';
+
+const getFormattedTimeFromUnix = (timestamp: string) =>
+  `${format(new Date(Number(timestamp)), 'MMM d, yyyy')}`;
 
 const StyledDiv = styled.div`
   padding: 3rem;
+
+  h2 {
+    margin: 1em 0;
+    font-size: 2rem;
+    font-weight: 500;
+    // text-align: center;
+  }
+
+  table {
+    border-spacing: 0;
+    // border: 1px solid black;
+
+    tr {
+      // display: flex;
+      :last-child {
+        td {
+          border-bottom: 0;
+        }
+      }
+    }
+
+    th,
+    td {
+      margin: 0;
+      padding: 0.5em 1.5em;
+      // border-bottom: 1px solid black;
+      // border-right: 1px solid black;
+
+      :last-child {
+        border-right: 0;
+      }
+      :first-child {
+        padding: 0.5em 0.5em;
+      }
+    }
+
+    th {
+      text-align: left;
+      // display: flex;
+
+      svg {
+        width: 1em;
+        height: auto;
+      }
+    }
+  }
 `;
+
+function Table({ columns, data }: any) {
+  // Use the useTable Hook to send the state and dispatch actions to
+  // your table.
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+      },
+      useSortBy
+    );
+
+  // Render the UI for your table
+  return (
+    <table {...getTableProps()}>
+      <thead>
+        {headerGroups.map((headerGroup: any, index) => (
+          <tr
+            className="header-row"
+            {...headerGroup.getHeaderGroupProps()}
+            key={index}
+          >
+            {headerGroup.headers.map((column: any, columnIndex: number) => (
+              <th
+                {...column.getHeaderProps(column.getSortByToggleProps())}
+                key={columnIndex}
+                className={'column-header'}
+              >
+                <span>{column.render('Header')}</span>
+                <span>
+                  {column.isSorted ? (
+                    column.isSortedDesc ? (
+                      <MdSort />
+                    ) : (
+                      <MdSort direction="up" />
+                    )
+                  ) : (
+                    ''
+                  )}
+                </span>
+              </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.slice(0, 10).map((row, rowIndex) => {
+          prepareRow(row);
+          console.log('row', row);
+          return (
+            <tr {...row.getRowProps()} key={rowIndex}>
+              {row.cells.map((cell, index) => {
+                const cellHeader: any = cell.column.Header;
+                console.log('cellHeader', cellHeader);
+                if (
+                  cellHeader === 'Due Date'
+                  // cellHeader.props.children === 'Due Date'
+                ) {
+                  return (
+                    <td {...cell.getCellProps()} key={index}>
+                      {getFormattedTimeFromUnix(cell.value)}
+                    </td>
+                  );
+                }
+                return (
+                  <td {...cell.getCellProps()} key={index}>
+                    {cell.render('Cell')}
+                  </td>
+                );
+              })}
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
+}
 
 const Active: NextPage = () => {
   const user = useReactiveVar(userVar);
@@ -44,8 +175,23 @@ const Active: NextPage = () => {
         firstname
         lastname
         email
+        image
         tasks {
           id
+          createdAt
+          updatedAt
+
+          description
+          dueDate
+          location
+          pincode
+
+          taskerInContact {
+            email
+          }
+
+          size
+          status
         }
       }
     }
@@ -68,15 +214,73 @@ const Active: NextPage = () => {
     }
   }, [data]);
 
+  const tableColumns = React.useMemo(
+    () => [
+      // {
+      //   Header: '#',
+      //   accessor: 'id',
+      //   Cell: (row: any, index: number) => index + 1,
+      // },
+      {
+        Header: 'Due Date',
+        accessor: 'dueDate',
+      },
+      {
+        Header: 'Description',
+        accessor: 'description',
+      },
+      {
+        Header: 'Location',
+        accessor: 'location',
+      },
+      {
+        Header: 'Pincode',
+        accessor: 'pincode',
+      },
+      {
+        Header: 'Size',
+        accessor: 'size',
+      },
+      {
+        Header: 'Status',
+        accessor: 'status',
+      },
+      // {
+      //   Header: 'Action',
+      //   accessor: 'action',
+      // },
+    ],
+    []
+  );
+
+  const tableData = React.useMemo(() => {
+    if (data && data.getCurrentUser) {
+      return data.getCurrentUser.tasks.map((task: any) => {
+        return {
+          dueDate: task.dueDate,
+          description: task.description,
+          location: task.location,
+          pincode: task.pincode,
+          size: task.size,
+          status: task.status,
+        };
+      });
+    }
+  }, [data]);
+
+  console.log('tableData', tableData);
+
   return (
     <StyledDiv>
       {user?.tasks && user?.tasks.length > 0 ? (
         <div>
-          {user.tasks.map((task: any) => (
+          {/* {user.tasks.map((task: any) => (
             <div key={task.id}>
               <p>{task.id}</p>
             </div>
-          ))}
+          ))} */}
+          <h2>Your tasks</h2>
+          <Table columns={tableColumns} data={tableData} />
         </div>
       ) : (
         <EmptyDisplay

@@ -10,11 +10,14 @@ import React from 'react';
 // import EmptyDisplay from 'src/components/EmptyDisplay';
 
 // import { RiTodoLine } from 'react-icons/ri';
-import { gql, useQuery, useReactiveVar } from '@apollo/client';
-import { userVar, taskCategoryVar } from 'src/apollo/reactiveVars';
+import { gql, useMutation, useQuery, useReactiveVar } from '@apollo/client';
+import { userVar, taskCategoryVar, tasksVar } from 'src/apollo/reactiveVars';
 
 import { useForm } from 'react-hook-form';
 import { DatePicker, TimePicker, notification } from 'antd';
+// import { Task } from 'src/utils/types';
+
+// import { TaskSize } from 'src/utils/types';
 
 const StyledDiv = styled.div`
   padding: 3rem;
@@ -188,22 +191,24 @@ const openNotification = () => {
 };
 
 interface TaskDetails {
+  pincode?: string;
   address?: string;
   description?: string;
   category?: string;
   tasksize?: 'Small' | 'Medium' | 'Large';
-  taskerInContact?: any;
+  taskerInContact?: string;
+  dueDate?: string;
 }
 
 const TaskDescription = ({
-  task,
+  taskDetails,
   taskCategory,
-  setTask,
+  setTaskDetails,
   next,
 }: {
-  task: TaskDetails;
+  taskDetails: TaskDetails;
   taskCategory: string;
-  setTask: (task: TaskDetails) => void;
+  setTaskDetails: (taskDetails: TaskDetails) => void;
   next(): void;
 }) => {
   const {
@@ -214,7 +219,7 @@ const TaskDescription = ({
   // eslint-disable-next-line unicorn/consistent-function-scoping
   const onSubmit = (values: any) => {
     console.log('values', values);
-    setTask({ ...task, ...values });
+    setTaskDetails({ ...taskDetails, ...values });
     next();
   };
   return (
@@ -225,6 +230,24 @@ const TaskDescription = ({
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             type="text"
+            {...register('pincode', {
+              required: 'Required',
+              pattern: {
+                value: /^[1-9]\d{5}$/,
+                message: 'invalid pincode',
+              },
+            })}
+            value={taskDetails.pincode}
+            placeholder="pincode"
+            minLength={6}
+            maxLength={6}
+          />
+          <br />
+          {errors.pincode && errors.pincode.message}
+          <br />
+
+          <input
+            type="text"
             {...register('address', {
               required: 'Required',
               // pattern: {
@@ -232,7 +255,7 @@ const TaskDescription = ({
               //   message: 'invalid email address',
               // },
             })}
-            value={task.address}
+            value={taskDetails.address}
             placeholder="address"
           />
           <br />
@@ -245,7 +268,7 @@ const TaskDescription = ({
               // validate: (value) => value !== 'admin' || 'Nice try!',
             })}
             placeholder="Task Description..."
-            value={task.description}
+            value={taskDetails.description}
           />
           <br />
           {errors.description && errors.description.message}
@@ -257,13 +280,13 @@ const TaskDescription = ({
               validate: (value) =>
                 value !== 'Select task size' || 'Please select task size',
             })}
-            // value={task.tasksize}
-            defaultValue={task.tasksize}
+            // value={taskDetails.tasksize}
+            defaultValue={taskDetails.tasksize}
           >
             <option value={'Select task size'}>Select task size</option>
-            <option value={'Small'}>Small</option>
-            <option value={'Medium'}>Medium</option>
-            <option value={'Large'}>Large</option>
+            <option value={'small'}>Small</option>
+            <option value={'medium'}>Medium</option>
+            <option value={'large'}>Large</option>
           </select>
           <br />
           {errors.tasksize && errors.tasksize.message}
@@ -280,14 +303,14 @@ const TaskerSelection = ({
   statedTaskers,
   taskCategory,
   next,
-  task,
-  setTask,
+  taskDetails,
+  setTaskDetails,
 }: {
   statedTaskers: any;
   taskCategory: string;
   next: () => void;
-  task: TaskDetails;
-  setTask: (task: TaskDetails) => void;
+  taskDetails: TaskDetails;
+  setTaskDetails: (taskDetails: TaskDetails) => void;
 }) => {
   return (
     <div className="tasker-cards-container">
@@ -333,7 +356,10 @@ const TaskerSelection = ({
             </p>
             <button
               onClick={() => {
-                setTask({ ...task, taskerInContact: tasker.id });
+                setTaskDetails({
+                  ...taskDetails,
+                  taskerInContact: tasker.email,
+                });
                 next();
               }}
             >
@@ -346,18 +372,43 @@ const TaskerSelection = ({
   );
 };
 
-const TimeSelector = () => {
+const TimeSelector = ({
+  // next,
+  taskDetails,
+  setTaskDetails,
+}: {
+  // next: () => void;
+  taskDetails: TaskDetails;
+  setTaskDetails: (taskDetails: TaskDetails) => void;
+}) => {
   return (
-    <div className="time-selector">
-      <h1>Select meeting time</h1>
-      <DatePicker />
-      <TimePicker />
+    <div>
+      <div className="time-selector">
+        <h1>Select meeting time</h1>
+        <DatePicker />
+        <TimePicker />
+      </div>
+      <div>
+        <button
+          onClick={() => {
+            setTaskDetails({
+              ...taskDetails,
+              dueDate: new Date().toISOString(),
+            });
+            // next();
+          }}
+          className="task-confirmation-button"
+        >
+          Confirm
+        </button>
+      </div>
     </div>
   );
 };
 
 const Create: NextPage = () => {
   const user = useReactiveVar(userVar);
+  const tasks = useReactiveVar(tasksVar);
   const [currentStep, setCurrentStep] = React.useState(1);
   // console.log(user);
   if (!Cookies.get('signedin') || !user) {
@@ -366,7 +417,7 @@ const Create: NextPage = () => {
 
   const taskCategory = useReactiveVar(taskCategoryVar);
 
-  const [task, setTask] = React.useState<TaskDetails>({});
+  const [taskDetails, setTaskDetails] = React.useState<TaskDetails>({});
 
   const [statedTaskers, setStatedTaskers] = React.useState([]);
 
@@ -405,12 +456,94 @@ const Create: NextPage = () => {
     }
   }, [taskers]);
 
-  if (!taskCategory) {
-    typeof window !== 'undefined' && Router.push('/dashboard/explore');
-    return <></>;
+  console.log('taskDetails', taskDetails);
+
+  // const CREATE_POST = gql`
+  //   mutation CreatePost($retroId: ID!, $columnId: ID!, $postContent: String!) {
+  //     createPost(
+  //       retroId: $retroId
+  //       columnId: $columnId
+  //       postContent: $postContent
+  //     )
+  //   }
+  // `;
+
+  const CREATE_TASK = gql`
+    mutation createTask(
+      $description: String!
+      $dueDate: String
+      $location: String!
+      $pincode: String!
+      $userEmail: String!
+      $taskerInContactEmail: String!
+      $size: TaskSize!
+    ) {
+      createTask(
+        description: $description
+        dueDate: $dueDate
+        location: $location
+        pincode: $pincode
+        userEmail: $userEmail
+        taskerInContactEmail: $taskerInContactEmail
+        size: $size
+      ) {
+        id
+        createdAt
+        updatedAt
+        description
+        dueDate
+        location
+        pincode
+        size
+        status
+      }
+    }
+  `;
+
+  const onTaskCreationCompleted = (data: any) => {
+    console.log('task created successfully', data);
+    // tasksVar([...tasks ]);
+
+    // Cookies.set('signedin', 'true');
+
+    Router.push('/dashboard/active');
+  };
+
+  const [
+    createNewTask,
+    { error: taskError, loading: taskLoading, data: taskData },
+  ] = useMutation(CREATE_TASK, {
+    onCompleted: onTaskCreationCompleted,
+  });
+
+  console.log({ taskError, taskLoading, taskData });
+
+  if (error) {
+    console.error('TASKER LOGIN ERROR', error);
   }
 
-  console.log('task', task);
+  const handleFormSubmit = (dateTime: string) => {
+    // eslint-disable-next-line unicorn/no-document-cookie
+
+    console.log('form submit handler', dateTime);
+    createNewTask({
+      variables: {
+        description: taskDetails.description,
+        dueDate: dateTime,
+        location: taskDetails.address,
+        pincode: taskDetails.pincode,
+        userEmail: user?.email,
+        taskerInContactEmail: taskDetails.taskerInContact,
+        size: taskDetails.tasksize,
+      },
+    });
+    // console.log('type 2', credential);
+
+    // api call to check if user exits
+    // if yes then login and start a session
+
+    // if no then create a new user then login and start a session
+  };
 
   // const TimeSelction = <div>Time Selection</div>;
 
@@ -426,13 +559,18 @@ const Create: NextPage = () => {
     setCurrentStep(currentStep - 1);
   };
 
+  if (!taskCategory) {
+    typeof window !== 'undefined' && Router.push('/dashboard/explore');
+    return <></>;
+  }
+
   switch (currentStep) {
     case 1: {
       currentComponent = (
         <TaskDescription
-          task={task}
+          taskDetails={taskDetails}
           taskCategory={taskCategory}
-          setTask={setTask}
+          setTaskDetails={setTaskDetails}
           next={next}
         />
       );
@@ -444,8 +582,8 @@ const Create: NextPage = () => {
         <TaskerSelection
           statedTaskers={statedTaskers}
           taskCategory={taskCategory}
-          task={task}
-          setTask={setTask}
+          taskDetails={taskDetails}
+          setTaskDetails={setTaskDetails}
           next={next}
         />
       );
@@ -453,7 +591,12 @@ const Create: NextPage = () => {
       break;
     }
     case 3: {
-      currentComponent = <TimeSelector />;
+      currentComponent = (
+        <TimeSelector
+          taskDetails={taskDetails}
+          setTaskDetails={setTaskDetails}
+        />
+      );
 
       break;
     }
@@ -489,7 +632,12 @@ const Create: NextPage = () => {
         {currentStep === steps.length - 1 && (
           <button
             // type="primary"
-            onClick={openNotification}
+            onClick={() => {
+              console.log('creating task...');
+              const currentTime = new Date().toISOString();
+              handleFormSubmit(currentTime);
+              openNotification;
+            }}
             className="confirm-btn"
           >
             Confirm
