@@ -57,7 +57,7 @@ const StyledDiv = styled.div`
 
         button {
           width: 100%;
-          background: #ccc;
+          background: ${(props) => props.theme.colors.primary};
           border: none;
           outline: none;
           cursor: pointer;
@@ -131,7 +131,7 @@ const StyledDiv = styled.div`
 
         button {
           width: 100%;
-          background: #ccc;
+          background: ${(props) => props.theme.colors.primary};
           border: none;
           outline: none;
           cursor: pointer;
