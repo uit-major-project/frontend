@@ -33,8 +33,8 @@ const MainLayout = (props: Props): JSX.Element => {
   const theme = currentTheme;
 
   const GET_CURRENT_USER = gql`
-    query getCurrentUser {
-      getCurrentUser {
+    query getCurrentUser($jwt: String!) {
+      getCurrentUser(jwt: $jwt) {
         id
         createdAt
         updatedAt
@@ -75,7 +75,18 @@ const MainLayout = (props: Props): JSX.Element => {
     }
   `;
 
-  const { data, error, loading } = useQuery(GET_CURRENT_USER);
+  const token =
+    typeof window !== 'undefined' && typeof localStorage !== 'undefined'
+      ? localStorage.getItem('token')
+      : '';
+
+  console.log('token', token);
+
+  const { data, error, loading } = useQuery(GET_CURRENT_USER, {
+    variables: {
+      jwt: token,
+    },
+  });
 
   if (error) {
     console.error('error fetching current user', error);

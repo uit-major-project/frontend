@@ -12,6 +12,8 @@ import NotificationDrawer from './Drawers/NotificationDrawer';
 // import PreferencesDrawer from '../PreferencesDrawer';
 import ProfileDrawer from './Drawers/ProfileDrawer';
 import { User } from 'src/utils/types';
+import { Avatar } from 'antd';
+import { AiOutlineUser } from 'react-icons/ai';
 
 const StyledTopbar = styled.nav`
   .topbar-container {
@@ -183,11 +185,16 @@ function UserLoggedInNav({
                 role="button"
                 tabIndex={0}
               >
-                <img
+                {/* <img
                   // size="default"
                   src={user.image}
                   alt="avatar"
-                />
+                /> */}
+                {user.image && user.image !== '' ? (
+                  <img src={user.image} alt="avatar" />
+                ) : (
+                  <Avatar size={'large'} icon={<AiOutlineUser />} />
+                )}
               </div>
             </div>
           </div>

@@ -7,6 +7,7 @@ import { gql, useMutation, useReactiveVar } from '@apollo/client';
 import { userVar } from 'src/apollo/reactiveVars';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
+import { StyledLoader } from './dashboard/active';
 
 // import h2 from '../../public/img/h2.jpg';
 
@@ -89,7 +90,7 @@ const Login: NextPage = () => {
     }
   `;
 
-  const [loginWithGoogle, { error }] = useMutation(LOGIN_WITH_GOOGLE, {
+  const [loginWithGoogle, { error, loading }] = useMutation(LOGIN_WITH_GOOGLE, {
     onCompleted,
   });
 
@@ -105,6 +106,7 @@ const Login: NextPage = () => {
         jwt: credential,
       },
     });
+    localStorage.setItem('token', credential);
     // console.log('type', credential);
 
     // api call to check if user exits
@@ -153,11 +155,15 @@ const Login: NextPage = () => {
 
   return (
     <StyledDiv>
+      {loading ? (
+        <StyledLoader />
+      ) : (
+        <div className="login-content-container">
+          <p>Login / Sign up With Google</p>
+          <div id="buttonDiv"></div>
+        </div>
+      )}
       {/* <h1>Handy Services</h1> */}
-      <div className="login-content-container">
-        <p>Login / Sign up With Google</p>
-        <div id="buttonDiv"></div>
-      </div>
       {/* <div className="login-image-container">
         <img src={h2.src} alt="" />
       </div> */}
