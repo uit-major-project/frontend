@@ -49,6 +49,12 @@ const StyledDrawer = styled(Drawer)`
   }
   .menuitem:hover {
     background-color: ${(props) => props.theme.colors.primary};
+    .menuitem-heading,
+    .menuitem-desc {
+      color: ${(props) => props.theme.colors.text} !important;
+    }
+
+    color: ${(props) => props.theme.colors.background};
   }
   .menuitem:active {
     background-color: ${(props) => props.theme.colors.primary};
@@ -76,7 +82,7 @@ const StyledDrawer = styled(Drawer)`
   .icon {
     color: ${(props) => props.theme.colors.text};
     fill: ${(props) => props.theme.colors.text};
-    width: 3.5rem;
+    width: 1.75rem;
     height: 3.5rem;
   }
   .logout-icon {
@@ -87,9 +93,11 @@ const StyledDrawer = styled(Drawer)`
     width: 100%;
   }
   .user {
-    margin: 0.5em 0;
+    margin: 0;
 
     img {
+      width: 5em;
+      height: 5em;
       border-radius: 50%;
     }
   }
@@ -135,7 +143,12 @@ const ProfileDrawer = (props: Props): JSX.Element => {
       >
         <div className="user">
           <NextLink href={'/account'}>
-            <Row className="menuitem">
+            <Row
+              className="menuitem"
+              onClick={() => {
+                props.profileDrawerClose();
+              }}
+            >
               <Col span={6} className="icon-container">
                 <img src={user?.image} alt="" />
               </Col>

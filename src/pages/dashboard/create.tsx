@@ -15,6 +15,7 @@ import { userVar, taskCategoryVar, tasksVar } from 'src/apollo/reactiveVars';
 
 import { useForm } from 'react-hook-form';
 import { DatePicker, TimePicker, notification } from 'antd';
+import { StyledLoader } from './active';
 // import { Task } from 'src/utils/types';
 
 // import { TaskSize } from 'src/utils/types';
@@ -327,7 +328,7 @@ const TaskerSelection = ({
                 <div>
                   {tasker.firstname} {tasker.lastname}
                 </div>
-                <div>Rs.{tasker.price ?? 100}/hr</div>
+                <div>Rs.{tasker.pricePerHourInRs ?? 100}/hr</div>
               </div>
               {tasker.reviews ? (
                 <p>
@@ -374,22 +375,26 @@ const TaskerSelection = ({
 
 const TimeSelector = ({
   // next,
-  taskDetails,
-  setTaskDetails,
+  taskDate,
+  setTaskDate,
+  taskTime,
+  setTaskTime,
 }: {
   // next: () => void;
-  taskDetails: TaskDetails;
-  setTaskDetails: (taskDetails: TaskDetails) => void;
+  taskDate: any;
+  setTaskDate: (taskDate: any) => void;
+  taskTime: any;
+  setTaskTime: (taskTime: any) => void;
 }) => {
   return (
     <div>
       <div className="time-selector">
-        <h1>Select meeting time</h1>
-        <DatePicker />
-        <TimePicker />
+        <h1>When do you want the task to be completed?</h1>
+        <DatePicker defaultValue={taskDate} onChange={setTaskDate} />
+        <TimePicker defaultValue={taskTime} onChange={setTaskTime} />
       </div>
       <div>
-        <button
+        {/* <button
           onClick={() => {
             setTaskDetails({
               ...taskDetails,
@@ -400,7 +405,7 @@ const TimeSelector = ({
           className="task-confirmation-button"
         >
           Confirm
-        </button>
+        </button> */}
       </div>
     </div>
   );
@@ -408,18 +413,19 @@ const TimeSelector = ({
 
 const Create: NextPage = () => {
   const user = useReactiveVar(userVar);
-  const tasks = useReactiveVar(tasksVar);
+  // const tasks = useReactiveVar(tasksVar);
   const [currentStep, setCurrentStep] = React.useState(1);
   // console.log(user);
-  if (!Cookies.get('signedin') || !user) {
-    typeof window !== 'undefined' && Router.push('/login');
-  }
 
   const taskCategory = useReactiveVar(taskCategoryVar);
 
   const [taskDetails, setTaskDetails] = React.useState<TaskDetails>({});
 
   const [statedTaskers, setStatedTaskers] = React.useState([]);
+
+  const [taskDate, setTaskDate] = React.useState<any>();
+
+  const [taskTime, setTaskTime] = React.useState<any>();
 
   const GET_TASKERS = gql`
     query taskers {
@@ -434,6 +440,8 @@ const Create: NextPage = () => {
         permanentAddress
         isVerified
         hasPaidOneTimeFee
+        pricePerHourInRs
+        experience
         isActive
       }
     }
@@ -447,6 +455,10 @@ const Create: NextPage = () => {
 
   if (loading) {
     console.log('fetching taskers...');
+  }
+
+  if ((!Cookies.get('signedin') || !user) && !loading) {
+    typeof window !== 'undefined' && Router.push('/login');
   }
 
   React.useEffect(() => {
@@ -507,6 +519,7 @@ const Create: NextPage = () => {
     // Cookies.set('signedin', 'true');
 
     Router.push('/dashboard/active');
+    openNotification;
   };
 
   const [
@@ -522,19 +535,31 @@ const Create: NextPage = () => {
     console.error('TASKER LOGIN ERROR', error);
   }
 
-  const handleFormSubmit = (dateTime: string) => {
+  const handleFormSubmit = () => {
     // eslint-disable-next-line unicorn/no-document-cookie
 
-    console.log('form submit handler', dateTime);
+    console.log('form submit handler');
+
+    const concatenatedDate = `${taskDate!.format(
+      'YYYY-MM-DD'
+    )}T${taskTime!.format('HH:mm:ss')}`;
+
+    const parsedDate = Date.parse(concatenatedDate);
+
+    const dateInISO = new Date(parsedDate).toISOString();
+
+    console.log('dateInISO', dateInISO, parsedDate);
+
     createNewTask({
       variables: {
         description: taskDetails.description,
-        dueDate: dateTime,
+        dueDate: dateInISO,
         location: taskDetails.address,
         pincode: taskDetails.pincode,
         userEmail: user?.email,
         taskerInContactEmail: taskDetails.taskerInContact,
         size: taskDetails.tasksize,
+        category: taskCategory,
       },
     });
     // console.log('type 2', credential);
@@ -593,8 +618,10 @@ const Create: NextPage = () => {
     case 3: {
       currentComponent = (
         <TimeSelector
-          taskDetails={taskDetails}
-          setTaskDetails={setTaskDetails}
+          taskDate={taskDate}
+          taskTime={taskTime}
+          setTaskDate={setTaskDate}
+          setTaskTime={setTaskTime}
         />
       );
 
@@ -616,43 +643,51 @@ const Create: NextPage = () => {
   //   name: 'Book now',
   // };
 
+  console.log('taskDate', taskDate, taskDate?.format('YYYY-MM-DD'));
+  console.log('taskTime', taskTime, taskTime?.format('HH:mm:ss'));
+
   return (
     <StyledDiv>
+      {loading || taskLoading ? (
+        <StyledLoader />
+      ) : (
+        <div>
+          {currentComponent}
+          <div className="action-buttons">
+            {currentStep < steps.length &&
+              currentStep !== 1 &&
+              currentStep !== 2 &&
+              currentStep !== 3 && (
+                <button className="next-btn" onClick={() => next()}>
+                  Next
+                </button>
+              )}
+            {currentStep === steps.length - 1 && (
+              <button
+                // type="primary"
+                onClick={() => {
+                  console.log('creating task...');
+                  handleFormSubmit();
+                  // Router.push('/dashboard/active');
+                }}
+                className="confirm-btn"
+              >
+                Confirm
+              </button>
+            )}
+            {currentStep > 1 && (
+              <button
+                className="prev-btn"
+                style={{ margin: '0 8px' }}
+                onClick={() => prev()}
+              >
+                Previous
+              </button>
+            )}
+          </div>
+        </div>
+      )}
       <></>
-      {currentComponent}
-      <div className="action-buttons">
-        {currentStep < steps.length &&
-          currentStep !== 1 &&
-          currentStep !== 2 &&
-          currentStep !== 3 && (
-            <button className="next-btn" onClick={() => next()}>
-              Next
-            </button>
-          )}
-        {currentStep === steps.length - 1 && (
-          <button
-            // type="primary"
-            onClick={() => {
-              console.log('creating task...');
-              const currentTime = new Date().toISOString();
-              handleFormSubmit(currentTime);
-              openNotification;
-            }}
-            className="confirm-btn"
-          >
-            Confirm
-          </button>
-        )}
-        {currentStep > 1 && (
-          <button
-            className="prev-btn"
-            style={{ margin: '0 8px' }}
-            onClick={() => prev()}
-          >
-            Previous
-          </button>
-        )}
-      </div>
     </StyledDiv>
   );
 };

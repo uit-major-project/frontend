@@ -30,7 +30,7 @@ const StyledTopbar = styled.nav`
     z-index: 10;
   }
   .left-panel {
-    // padding-left: 2em;
+    padding-left: 2em;
     display: flex;
     justify-content: space-around;
     align-items: center;

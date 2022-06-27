@@ -15,34 +15,64 @@ import { userVar } from 'src/apollo/reactiveVars';
 // import { tasks } from 'data/tasks';
 import { MdOutlineTaskAlt, MdSort } from 'react-icons/md';
 
-import { useTable, useSortBy } from 'react-table';
+import { useTable, useSortBy, Row } from 'react-table';
 
 import { format } from 'date-fns';
+import { Tag } from 'antd';
+import Link from 'next/link';
 
-const getFormattedTimeFromUnix = (timestamp: string) =>
+import PulseLoader from 'react-spinners/PulseLoader';
+
+export const getFormattedTimeFromUnix = (timestamp: string) =>
   `${format(new Date(Number(timestamp)), 'MMM d, yyyy')}`;
 
+export const StyledLoader = styled(PulseLoader)`
+  position: relative;
+  top: 50%;
+  margin: auto;
+  color: ${(props) => props.theme.colors.primary};
+  // background-color: ${(props) => props.theme.colors.primary};
+`;
+
 const StyledDiv = styled.div`
-  padding: 3rem;
+  padding: 1em 3rem;
 
   h2 {
-    margin: 1em 0;
+    margin: 0.25em 0 1em 0;
     font-size: 2rem;
     font-weight: 500;
     // text-align: center;
   }
 
+  .table-container {
+    height: calc(100vh - 15em);
+    overflow: auto;
+  }
+
   table {
+    width: 100%;
     border-spacing: 0;
     // border: 1px solid black;
 
+    .table-body {
+      z-index: 0;
+      max-height: 100%;
+      // overflow-y: auto;
+    }
+
     tr {
       // display: flex;
+      background: #fafafa;
+      cursor: pointer;
       :last-child {
         td {
           border-bottom: 0;
         }
       }
+    }
+
+    tr: hover {
+      background-color: #f4f4f4;
     }
 
     th,
@@ -64,6 +94,14 @@ const StyledDiv = styled.div`
       text-align: left;
       // display: flex;
 
+      background: #eee;
+
+      position: sticky;
+      top: 0px;
+      margin: 0 0 0 0;
+      overflow: hidden;
+      z-index: 1;
+
       svg {
         width: 1em;
         height: auto;
@@ -71,6 +109,21 @@ const StyledDiv = styled.div`
     }
   }
 `;
+
+const getStatusTagColor = (status: string) => {
+  switch (status) {
+    case 'open':
+      return 'blue';
+    case 'in-progress':
+      return 'cyan';
+    case 'completed':
+      return 'green';
+    case 'cancelled':
+      return 'red';
+    default:
+      return 'blue';
+  }
+};
 
 function Table({ columns, data }: any) {
   // Use the useTable Hook to send the state and dispatch actions to
@@ -117,32 +170,61 @@ function Table({ columns, data }: any) {
           </tr>
         ))}
       </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.slice(0, 10).map((row, rowIndex) => {
+      <tbody className="table-body" {...getTableBodyProps()}>
+        {rows.slice(0, 10).map((row: any, rowIndex) => {
           prepareRow(row);
           console.log('row', row);
+          // if (!row.original || !row.original.id) {
+          //   return <></>;
+          // }
           return (
-            <tr {...row.getRowProps()} key={rowIndex}>
-              {row.cells.map((cell, index) => {
-                const cellHeader: any = cell.column.Header;
-                console.log('cellHeader', cellHeader);
-                if (
-                  cellHeader === 'Due Date'
-                  // cellHeader.props.children === 'Due Date'
-                ) {
+            <Link passHref href={`/task/${row.original.id}`} key={rowIndex}>
+              <tr {...row.getRowProps()} key={rowIndex}>
+                {row.cells.map((cell: any, index: number) => {
+                  const cellHeader: any = cell.column.Header;
+                  // console.log(
+                  //   'cellHeader',
+                  //   cellHeader,
+                  //   'cell value',
+                  //   cell.value
+                  // );
+                  if (cellHeader === 'Tasker') {
+                    return (
+                      <td {...cell.getCellProps()} key={index}>
+                        <span>
+                          {cell.value.firstname} {cell.value.lastname}
+                        </span>
+                      </td>
+                    );
+                  }
+                  if (
+                    cellHeader === 'Due Date' ||
+                    cellHeader === 'Created At'
+                    // cellHeader.props.children === 'Due Date'
+                  ) {
+                    return (
+                      <td {...cell.getCellProps()} key={index}>
+                        {getFormattedTimeFromUnix(cell.value)}
+                      </td>
+                    );
+                  }
+                  if (cellHeader === 'Status') {
+                    return (
+                      <td {...cell.getCellProps()} key={index}>
+                        <Tag color={getStatusTagColor(cell.value)}>
+                          {cell.value}
+                        </Tag>
+                      </td>
+                    );
+                  }
                   return (
                     <td {...cell.getCellProps()} key={index}>
-                      {getFormattedTimeFromUnix(cell.value)}
+                      {cell.render('Cell')}
                     </td>
                   );
-                }
-                return (
-                  <td {...cell.getCellProps()} key={index}>
-                    {cell.render('Cell')}
-                  </td>
-                );
-              })}
-            </tr>
+                })}
+              </tr>
+            </Link>
           );
         })}
       </tbody>
@@ -187,21 +269,32 @@ const Active: NextPage = () => {
           pincode
 
           taskerInContact {
+            firstname
+            lastname
             email
+            image
+            phone
+            experience
+            pricePerHourInRs
           }
 
           size
           status
+
+          category
+          isPaymentDone
         }
       }
     }
   `;
 
-  const { data, error, loading } = useQuery(GET_TASKS);
+  const { data, error, loading } = useQuery(GET_TASKS, {
+    fetchPolicy: 'network-only',
+  });
 
-  // if (error) {
-  //   console.error('error fetching tasks user', error);
-  // }
+  if (error) {
+    console.error('error fetching tasks user', error);
+  }
 
   if (loading) {
     console.log('fetching current user...');
@@ -225,6 +318,14 @@ const Active: NextPage = () => {
         Header: 'Due Date',
         accessor: 'dueDate',
       },
+      // {
+      //   Header: 'Created At',
+      //   accessor: 'createdAt',
+      // },
+      {
+        Header: 'Category',
+        accessor: 'category',
+      },
       {
         Header: 'Description',
         accessor: 'description',
@@ -245,6 +346,14 @@ const Active: NextPage = () => {
         Header: 'Status',
         accessor: 'status',
       },
+      {
+        Header: 'Tasker',
+        accessor: 'taskerInContact',
+      },
+      // {
+      //   Header: 'Is Payment Done',
+      //   accessor: 'isPaymentDone',
+      // },
       // {
       //   Header: 'Action',
       //   accessor: 'action',
@@ -263,6 +372,11 @@ const Active: NextPage = () => {
           pincode: task.pincode,
           size: task.size,
           status: task.status,
+          createdAt: task.createdAt,
+          taskerInContact: task.taskerInContact,
+          id: task.id,
+          isPaymentDone: task.isPaymentDone,
+          category: task.category,
         };
       });
     }
@@ -272,22 +386,30 @@ const Active: NextPage = () => {
 
   return (
     <StyledDiv>
-      {user?.tasks && user?.tasks.length > 0 ? (
-        <div>
-          {/* {user.tasks.map((task: any) => (
-            <div key={task.id}>
-              <p>{task.id}</p>
-            </div>
-          ))} */}
-          <h2>Your tasks</h2>
-          <Table columns={tableColumns} data={tableData} />
-        </div>
+      {loading ? (
+        <StyledLoader />
       ) : (
-        <EmptyDisplay
-          icon={<MdOutlineTaskAlt />}
-          title="Have something you want to get done?"
-          action={bookingAction}
-        />
+        <>
+          {data && user?.tasks && user?.tasks.length > 0 ? (
+            <div>
+              {/* {user.tasks.map((task: any) => (
+              <div key={task.id}>
+                <p>{task.id}</p>
+              </div>
+            ))} */}
+              <h2>Your tasks</h2>
+              <div className="table-container">
+                <Table columns={tableColumns} data={tableData} />
+              </div>
+            </div>
+          ) : (
+            <EmptyDisplay
+              icon={<MdOutlineTaskAlt />}
+              title="Have something you want to get done?"
+              action={bookingAction}
+            />
+          )}
+        </>
       )}
     </StyledDiv>
   );

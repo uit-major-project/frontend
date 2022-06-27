@@ -14,11 +14,11 @@ const StyledDiv = styled.div``;
 const Home: NextPage = () => {
   const user = useReactiveVar(userVar);
 
-  React.useEffect(() => {
-    if (Cookies.get('signedin') && user) {
-      Router.push('/dashboard/explore');
-    }
-  }, []);
+  // React.useEffect(() => {
+  if (Cookies.get('signedin') && user) {
+    Router.push('/dashboard/explore');
+  }
+  // }, []);
 
   return (
     <StyledDiv>

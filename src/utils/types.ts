@@ -60,7 +60,7 @@ export interface Tasker {
   phone?: string;
   permanentAddress?: string;
 
-  pricePerHour?: number;
+  pricePerHourInRs?: number;
   ratings?: any;
   experience?: string;
   category?: TaskType;

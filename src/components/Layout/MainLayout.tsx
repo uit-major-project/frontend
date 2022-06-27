@@ -7,6 +7,7 @@ import { themes } from '../../utils/themes';
 import Navbar from '../Navbar';
 import { gql, useQuery } from '@apollo/client';
 import { userVar } from 'src/apollo/reactiveVars';
+import { StyledLoader } from 'src/pages/dashboard/active';
 
 const StyledMain = styled.main`
   // height: calc(100vh - 5em);
@@ -54,11 +55,21 @@ const MainLayout = (props: Props): JSX.Element => {
           pincode
 
           taskerInContact {
+            firstname
+            lastname
             email
+            image
+            phone
+            experience
+            permanentAddress
+            pricePerHourInRs
           }
 
           size
           status
+
+          category
+          isPaymentDone
         }
       }
     }
@@ -131,10 +142,14 @@ const MainLayout = (props: Props): JSX.Element => {
         `}
       />
       <ThemeProvider theme={theme}>
-        <MainLayoutContainer>
-          <Navbar title="Handy Services" />
-          <StyledMain>{props.children}</StyledMain>
-        </MainLayoutContainer>
+        {loading ? (
+          <StyledLoader />
+        ) : (
+          <MainLayoutContainer>
+            <Navbar title="Handy Services" />
+            <StyledMain>{props.children}</StyledMain>
+          </MainLayoutContainer>
+        )}
       </ThemeProvider>
     </>
   );

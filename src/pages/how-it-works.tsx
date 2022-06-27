@@ -65,7 +65,7 @@ const HowItWorks: NextPage = () => {
   return (
     <StyledDiv>
       <h1>How it Works</h1>
-      <p>
+      <div>
         Handyman Services is a service provider that helps you Live Smarter;
         Live Better. With our website get your routine or periodic chores
         (tasks) done by outsourcing them to our in-house, trained, professional
@@ -117,7 +117,7 @@ const HowItWorks: NextPage = () => {
           </div>
         </div>
         {/* </Carousel> */}
-      </p>
+      </div>
     </StyledDiv>
   );
 };

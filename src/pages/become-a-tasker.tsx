@@ -9,6 +9,7 @@ import { taskerVar } from 'src/apollo/reactiveVars';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
 import React from 'react';
+import { StyledLoader } from './dashboard/active';
 
 // import h3 from '../../public/img/h3.jpg';
 
@@ -184,15 +185,19 @@ const BecomeATasker: NextPage = () => {
 
   return (
     <StyledDiv>
-      <div className="tasker-content-container">
-        <h1>Work when you want, doing whatever you want.</h1>
-        {/* <p>Login / Sign up</p> */}
-        <p>Earn upto Rs. 50,000 on Handy Services</p>
-        <div id="buttonDivTasker"></div>
-      </div>
-      {/* <div className="tasker-image-container">
-        <img src={h3.src} alt="" />
-      </div> */}
+      {loading ? (
+        <StyledLoader />
+      ) : (
+        <div className="tasker-content-container">
+          <h1>Work when you want, doing whatever you want.</h1>
+          {/* <p>Login / Sign up</p> */}
+          <p>Earn upto Rs. 50,000 on Handy Services</p>
+          <div id="buttonDivTasker"></div>
+        </div>
+        /* <div className="tasker-image-container">
+          <img src={h3.src} alt="" />
+        </div> */
+      )}
     </StyledDiv>
   );
 };

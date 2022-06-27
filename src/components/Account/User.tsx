@@ -5,7 +5,15 @@ import styled from '@emotion/styled';
 // import { useReactiveVar } from '@apollo/client';
 // import { taskerVar, userVar } from 'src/apollo/reactiveVars';
 
-import { Descriptions, Avatar, Menu, Divider, MenuProps } from 'antd';
+import {
+  Descriptions,
+  Avatar,
+  Menu,
+  Divider,
+  MenuProps,
+  notification,
+  message,
+} from 'antd';
 // import Cookies from 'js-cookie';
 // import Router from 'next/router';
 import React from 'react';
@@ -14,6 +22,8 @@ import isEqual from 'lodash.isequal';
 
 import { useForm } from 'react-hook-form';
 import { User } from 'src/utils/types';
+import { gql, useMutation } from '@apollo/client';
+import { StyledLoader } from 'src/pages/dashboard/active';
 
 const StyledDiv = styled.div`
   // background: #efefef;
@@ -132,8 +142,15 @@ const items = [
   // },
 ];
 
-const onClick: MenuProps['onClick'] = (e) => {
-  console.log('click', e);
+// const onClick: MenuProps['onClick'] = (e) => {
+//   console.log('click', e);
+// };
+
+const success = () => {
+  message.success('Details updated successfully');
+};
+const warning = () => {
+  message.warning('No changes found');
 };
 
 const UserAccount = ({ user }: { user: User }) => {
@@ -142,119 +159,218 @@ const UserAccount = ({ user }: { user: User }) => {
     register,
     formState: { errors },
   } = useForm();
-  // const [userDetails, setUserDetails] = React.useState(user);
+  const [userDetails, setUserDetails] = React.useState(user);
 
   // const [hasDetailsChanges, setHasDetailsChanged] = React.useState(false);
 
-  // console.log('userDetails', userDetails);
+  console.log('userDetails', userDetails);
 
-  // const checkUserDetailsEquality = () => {
-  //   // console.log('isEqual', isEqual(userDetails, user));
-  //   // return isEqual(userDetails, user);
-  // };
+  const checkUserDetailsEquality = (values: any) => {
+    console.log(userDetails, { ...userDetails, ...values });
+    return isEqual(userDetails, { ...userDetails, ...values });
+  };
 
   // eslint-disable-next-line unicorn/consistent-function-scoping
   const onSubmit = (values: any) => {
     console.log('values', values);
-    // setUserDetails({ ...userDetails, ...values });
+    console.log('equal check', checkUserDetailsEquality(values));
+    if (!checkUserDetailsEquality(values)) {
+      // setUserDetails({ ...userDetails, ...values });
+      updateUser({
+        variables: {
+          id: userDetails?.id,
+          ...values,
+        },
+      });
+    } else {
+      warning();
+    }
   };
+
+  const UPDATE_USER = gql`
+    mutation updateUser(
+      $id: ID!
+      $firstname: String!
+      $lastname: String!
+      $email: String
+      $image: String
+      $phone: String
+      $permanentAddress: String
+    ) {
+      updateUser(
+        id: $id
+        firstname: $firstname
+        lastname: $lastname
+        email: $email
+        image: $image
+        phone: $phone
+        permanentAddress: $permanentAddress
+      ) {
+        id
+        createdAt
+        updatedAt
+        firstname
+        lastname
+        email
+        image
+        phone
+        permanentAddress
+        tasks {
+          id
+          createdAt
+          updatedAt
+
+          description
+          dueDate
+          location
+          pincode
+
+          taskerInContact {
+            firstname
+            lastname
+            email
+            image
+            phone
+            experience
+            permanentAddress
+            pricePerHourInRs
+          }
+
+          size
+          status
+
+          category
+          isPaymentDone
+        }
+      }
+    }
+  `;
+
+  const onCompleted = (data: any) => {
+    console.log('data', data);
+    setUserDetails(data.updateUser);
+    success();
+  };
+
+  const [updateUser, { error, loading, data }] = useMutation(UPDATE_USER, {
+    onCompleted,
+  });
+
+  console.log({ error, loading, data });
+
+  if (error) {
+    console.error('TASKER LOGIN ERROR', error);
+  }
+
+  // React.useEffect(() => {
+  //   if (data?.updateUser !== userDetails) {
+  //     setUserDetails(data?.updateUser);
+  //   }
+  // }, [data]);
 
   // console.log(user);
   return (
     <StyledDiv>
-      <div className="container">
-        {/* <h2>Your Account</h2> */}
+      {loading ? (
+        <StyledLoader />
+      ) : (
+        <div className="container">
+          {/* <h2>Your Account</h2> */}
 
-        <div className="container-account-section">
-          <div className="task-details-container">
-            {/* <h2 className="step-heading">Task Description</h2> */}
-            <div className="form-container">
-              {/* <p className="task-category">{taskCategory.toUpperCase()}</p> */}
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="profile-image">
-                  <img src={user.image} alt="" />
-                </div>
+          <div className="container-account-section">
+            <div className="task-details-container">
+              {/* <h2 className="step-heading">Task Description</h2> */}
+              <div className="form-container">
+                {/* <p className="task-category">{taskCategory.toUpperCase()}</p> */}
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <div className="profile-image">
+                    <img src={userDetails?.image} alt="" />
+                  </div>
 
-                <input
-                  type="text"
-                  {...register('firstname', {
-                    required: 'Required',
-                    // pattern: {
-                    //   value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/i,
-                    //   message: 'invalid email address',
-                    // },
-                  })}
-                  value={user.firstname}
-                  placeholder="firstname"
-                />
-                <br />
-                {errors.firstname && errors.firstname.message}
+                  <input
+                    type="text"
+                    {...register('firstname', {
+                      required: 'Required',
+                      // pattern: {
+                      //   value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/i,
+                      //   message: 'invalid email address',
+                      // },
+                    })}
+                    defaultValue={userDetails?.firstname}
+                    placeholder="firstname"
+                  />
+                  <br />
+                  {errors.firstname && errors.firstname.message}
 
-                <input
-                  type="text"
-                  {...register('lastname', {
-                    required: 'Required',
-                    // pattern: {
-                    //   value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/i,
-                    //   message: 'invalid email address',
-                    // },
-                  })}
-                  value={user.lastname}
-                  placeholder="lastname"
-                />
-                <br />
-                {errors.lastname && errors.lastname.message}
+                  <input
+                    type="text"
+                    {...register('lastname', {
+                      required: 'Required',
+                      // pattern: {
+                      //   value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/i,
+                      //   message: 'invalid email address',
+                      // },
+                    })}
+                    defaultValue={userDetails?.lastname}
+                    placeholder="lastname"
+                  />
+                  <br />
+                  {errors.lastname && errors.lastname.message}
 
-                <input
-                  type="email"
-                  {...register('email', {
-                    required: 'Required',
-                    // validate: (value) => value !== 'admin' || 'Nice try!',
-                  })}
-                  placeholder="Email..."
-                  value={user.email}
-                />
-                <br />
-                {errors.email && errors.email.message}
+                  <input
+                    type="email"
+                    {...register('email', {
+                      required: 'Required',
+                      // validate: (value) => value !== 'admin' || 'Nice try!',
+                    })}
+                    placeholder="Email..."
+                    defaultValue={userDetails?.email}
+                  />
+                  <br />
+                  {errors.email && errors.email.message}
 
-                <input
-                  type="text"
-                  {...register('phone', {
-                    required: 'Required',
-                    // pattern: {
-                    //   value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/i,
-                    //   message: 'invalid email address',
-                    // },
-                  })}
-                  value={user.phone}
-                  placeholder="Your phone number..."
-                />
-                <br />
-                {errors.phone && errors.phone.message}
+                  <input
+                    type="text"
+                    {...register('phone', {
+                      // required: 'Required',
+                      // pattern: {
+                      //   value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/i,
+                      //   message: 'invalid email address',
+                      // },
+                    })}
+                    defaultValue={userDetails?.phone ?? ''}
+                    placeholder="Your phone number..."
+                  />
+                  <br />
+                  {errors.phone && errors.phone.message}
 
-                <textarea
-                  {...register('address', {
-                    required: 'Required',
-                    // pattern: {
-                    //   value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/i,
-                    //   message: 'invalid email address',
-                    // },
-                  })}
-                  value={user.permanentAddress}
-                  placeholder="Address..."
-                />
-                <br />
-                {errors.lastname && errors.lastname.message}
+                  <textarea
+                    {...register('address', {
+                      // required: 'Required',
+                      // pattern: {
+                      //   value: /^[\w%+.-]+@[\d.a-z-]+\.[a-z]{2,}$/i,
+                      //   message: 'invalid email address',
+                      // },
+                    })}
+                    defaultValue={userDetails?.permanentAddress ?? ''}
+                    placeholder="Address..."
+                  />
+                  <br />
+                  {errors.lastname && errors.lastname.message}
 
-                <br />
-                <button type="submit" disabled={false}>
-                  Update Details
-                </button>
-              </form>
+                  <br />
+                  <button
+                    type="submit"
+                    // disabled={checkUserDetailsEquality() ? true : false}
+                  >
+                    Update Details
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </StyledDiv>
   );
 };

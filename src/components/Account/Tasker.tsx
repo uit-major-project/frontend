@@ -297,7 +297,7 @@ const TaskerAccount = ({ tasker }: { tasker: Tasker }) => {
                     //   message: 'invalid email address',
                     // },
                   })}
-                  value={tasker?.pricePerHour}
+                  value={tasker?.pricePerHourInRs}
                   placeholder="Hourly Charge (in Rs.)"
                 />
                 <br />
