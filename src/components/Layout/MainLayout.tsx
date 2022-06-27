@@ -84,7 +84,7 @@ const MainLayout = (props: Props): JSX.Element => {
 
   const { data, error, loading } = useQuery(GET_CURRENT_USER, {
     variables: {
-      jwt: token,
+      jwt: token ?? '',
     },
   });
 

@@ -296,7 +296,7 @@ const Active: NextPage = () => {
   const { data, error, loading } = useQuery(GET_TASKS, {
     fetchPolicy: 'network-only',
     variables: {
-      jwt: token,
+      jwt: token ?? '',
     },
   });
 
