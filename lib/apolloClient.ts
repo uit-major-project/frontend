@@ -26,6 +26,9 @@ function createApolloClient() {
     // uri: typeof window === 'undefined' ? `${uri}/api/graphql` : '/api/graphql',
     uri: `${uri}/graphql`,
     credentials: 'include',
+    // headers: {
+    //   authorization: localStorage.getItem('token'),
+    // },
   });
 
   return new ApolloClient({

@@ -251,8 +251,8 @@ const Active: NextPage = () => {
   };
 
   const GET_TASKS = gql`
-    query getCurrentUser {
-      getCurrentUser {
+    query getCurrentUser($jwt: String!) {
+      getCurrentUser(jwt: $jwt) {
         id
         firstname
         lastname
@@ -288,8 +288,16 @@ const Active: NextPage = () => {
     }
   `;
 
+  const token =
+    typeof window !== 'undefined' && typeof localStorage !== 'undefined'
+      ? localStorage.getItem('token')
+      : '';
+
   const { data, error, loading } = useQuery(GET_TASKS, {
     fetchPolicy: 'network-only',
+    variables: {
+      jwt: token,
+    },
   });
 
   if (error) {
