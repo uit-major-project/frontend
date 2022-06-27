@@ -552,7 +552,7 @@ const Create: NextPage = () => {
     const dateInISO = new Date(parsedDate).toISOString();
 
     console.log('dateInISO', dateInISO, parsedDate);
-
+    console.log('taskCategory', taskCategory);
     createNewTask({
       variables: {
         description: taskDetails.description,

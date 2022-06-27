@@ -10,11 +10,12 @@ import { Descriptions, Avatar, Menu, Divider, MenuProps } from 'antd';
 // import Router from 'next/router';
 import React from 'react';
 
-import isEqual from 'lodash.isequal';
+// import isEqual from 'lodash.isequal';
 
 import { useForm } from 'react-hook-form';
 import { Tasker } from 'src/utils/types';
-import { taskCategories, TaskCategory } from '../BookTask';
+// import { taskCategories, TaskCategory } from '../BookTask';
+import { taskTypes } from 'data/categories';
 
 const StyledDiv = styled.div`
   // background: #efefef;
@@ -265,9 +266,9 @@ const TaskerAccount = ({ tasker }: { tasker: Tasker }) => {
                   <option value={'Small'}>Small</option>
                   <option value={'Medium'}>Medium</option>
                   <option value={'Large'}>Large</option>
-                  {taskCategories.map((taskCategorie: TaskCategory) => (
-                    <option key={taskCategorie.id} value={taskCategorie.title}>
-                      {taskCategorie.title}
+                  {taskTypes.map((taskCategorie: any) => (
+                    <option key={taskCategorie.id} value={taskCategorie.id}>
+                      {taskCategorie.id}
                     </option>
                   ))}
                 </select>

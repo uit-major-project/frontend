@@ -1,8 +1,9 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import { useReactiveVar } from '@apollo/client';
+// import { useReactiveVar } from '@apollo/client';
 import styled from '@emotion/styled';
+import { taskTypes } from 'data/categories';
 import Router from 'next/router';
-import Select from 'react-select';
+// import Select from 'react-select';
 import { taskCategoryVar } from 'src/apollo/reactiveVars';
 
 const StyledDiv = styled.div`
@@ -102,22 +103,21 @@ export const taskCategories: TaskCategory[] = [
   },
 ];
 
-const selectOptions = taskCategories.map((category) => ({
-  value: category.title,
-  label: category.title,
-}));
+// const selectOptions = taskCategories.map((category) => ({
+//   value: category.title,
+//   label: category.title,
+// }));
+
+const handleTaskCategoryChange = (e: any) => {
+  if (e.target.value !== 'Select a Category') {
+    console.log('selected category', e.target.value);
+    taskCategoryVar(e.target.value);
+    Router.push('/dashboard/create');
+  }
+};
 
 const BookTask = ({ title }: Props) => {
-  const taskCategory = useReactiveVar(taskCategoryVar);
-
-  const handleTaskCategoryChange = (e: any) => {
-    if (e.target.value !== 'Select a Category') {
-      console.log('selected category', e.target.value);
-      taskCategoryVar(e.target.value);
-      Router.push('/dashboard/create');
-    }
-  };
-
+  // const taskCategory = useReactiveVar(taskCategoryVar);
   return (
     <StyledDiv>
       <h1>{title}</h1>
@@ -136,9 +136,9 @@ const BookTask = ({ title }: Props) => {
         {/* <Select onChange={(val: string) => {  }} options={selectOptions} /> */}
         <select onChange={handleTaskCategoryChange}>
           <option>Select a Category</option>
-          {taskCategories.map((category) => (
-            <option key={category.id} value={category.title}>
-              {category.title}
+          {taskTypes.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.id}
             </option>
           ))}
         </select>
