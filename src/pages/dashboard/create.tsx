@@ -489,6 +489,7 @@ const Create: NextPage = () => {
       $userEmail: String!
       $taskerInContactEmail: String!
       $size: TaskSize!
+      $category: TaskCategory!
     ) {
       createTask(
         description: $description
@@ -498,6 +499,7 @@ const Create: NextPage = () => {
         userEmail: $userEmail
         taskerInContactEmail: $taskerInContactEmail
         size: $size
+        category: $category
       ) {
         id
         createdAt
@@ -508,6 +510,7 @@ const Create: NextPage = () => {
         pincode
         size
         status
+        category
       }
     }
   `;
