@@ -11,7 +11,7 @@ import UserDashActive from 'src/components/Pages/userDashActive';
 import TaskerDashActive from 'src/components/Pages/taskerDashActive';
 
 if (!Cookies.get('signedin') && !Cookies.get('signedin_as_tasker')) {
-  Router.push('/login');
+  typeof window !== 'undefined' && Router.push('/login');
 }
 
 const Active: NextPage = () => {
