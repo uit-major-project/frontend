@@ -5,7 +5,6 @@ import Cookies from 'js-cookie';
 import Router from 'next/router';
 // import { useReactiveVar } from '@apollo/client';
 
-// import { userVar } from 'src/apollo/reactiveVars';
 import React from 'react';
 import EmptyDisplay from 'src/components/EmptyDisplay';
 
@@ -21,6 +20,7 @@ import { format } from 'date-fns';
 import { Tag } from 'antd';
 import Link from 'next/link';
 import { StyledLoader } from '../Loader';
+import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa';
 
 export const getFormattedTimeFromUnix = (timestamp: string) =>
   `${format(new Date(Number(timestamp)), 'MMM d, yyyy')}`;
@@ -107,7 +107,7 @@ const getStatusTagColor = (status: string) => {
       return 'blue';
     case 'in-progress':
       return 'cyan';
-    case 'completed':
+    case 'done':
       return 'green';
     case 'cancelled':
       return 'red';
@@ -144,13 +144,17 @@ function Table({ columns, data }: any) {
                 key={columnIndex}
                 className={'column-header'}
               >
-                <span>{column.render('Header')}</span>
+                <span style={{ textTransform: 'uppercase' }}>
+                  {column.render('Header')}
+                </span>
                 <span>
                   {column.isSorted ? (
                     column.isSortedDesc ? (
-                      <MdSort />
+                      // <MdSort />
+                      <FaSortDown />
                     ) : (
-                      <MdSort direction="up" />
+                      // <MdSort direction="up" />
+                      <FaSortUp />
                     )
                   ) : (
                     ''
@@ -249,6 +253,8 @@ const UserDashActive = () => {
         lastname
         email
         image
+        phone
+        permanentAddress
         tasks {
           id
           createdAt

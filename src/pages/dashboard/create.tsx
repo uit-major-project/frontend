@@ -5,15 +5,11 @@ import type { NextPage } from 'next';
 import styled from '@emotion/styled';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
-// import { useReactiveVar } from '@apollo/client';
 
-// import { userVar } from 'src/apollo/reactiveVars';
 import React from 'react';
-// import EmptyDisplay from 'src/components/EmptyDisplay';
 
-// import { RiTodoLine } from 'react-icons/ri';
 import { gql, useMutation, useQuery, useReactiveVar } from '@apollo/client';
-import { userVar, taskCategoryVar, tasksVar } from 'src/apollo/reactiveVars';
+import { userVar, taskCategoryVar } from 'src/apollo/reactiveVars';
 
 import { useForm } from 'react-hook-form';
 import { DatePicker, TimePicker, notification, Rate, Avatar } from 'antd';

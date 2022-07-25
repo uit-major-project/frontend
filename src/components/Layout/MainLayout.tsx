@@ -146,6 +146,10 @@ const MainLayout = (props: Props): JSX.Element => {
             text-transform: uppercase;
             text-align: center;
           }
+          button:disabled {
+            cursor: not-allowed !important;
+            pointer-events: all !important;
+          }
 
           @media (max-width: 800px) {
             .section-heading {

@@ -1,4 +1,4 @@
-import { useReactiveVar } from '@apollo/client';
+import { gql, useMutation, useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { taskCategoryVar, userVar } from 'src/apollo/reactiveVars';
@@ -9,6 +9,7 @@ import { getFormattedTimeFromUnix } from 'src/components/Pages/userDashActive';
 import { FiInfo } from 'react-icons/fi';
 import { Tooltip, Col, Row } from 'antd';
 import { TaskerCard } from 'src/components/TaskerCard';
+import { StyledLoader } from 'src/components/Loader';
 
 const StyledDiv = styled.div`
   padding: 1em 3rem;
@@ -129,87 +130,174 @@ const Task = () => {
     (task: Task) => task.id === taskid
   );
 
+  const UPDATE_TASK = gql`
+    mutation updateTask(
+      $id: ID!
+      $status: TaskStatus
+      $isPaymentDone: Boolean
+    ) {
+      updateTask(id: $id, status: $status, isPaymentDone: $isPaymentDone) {
+        id
+        createdAt
+        updatedAt
+
+        description
+        dueDate
+        location
+        pincode
+
+        taskerInContact {
+          firstname
+          lastname
+          email
+          image
+          phone
+          experience
+          pricePerHourInRs
+        }
+
+        size
+        status
+
+        category
+        isPaymentDone
+      }
+    }
+  `;
+
+  const [updateTask, { error, loading }] = useMutation(UPDATE_TASK, {
+    onCompleted: (data) => {
+      console.log('data', data);
+    },
+  });
+
+  if (error) {
+    console.error(error);
+  }
+
+  const markTaskAsCompleted = () => {
+    console.log('mark task as complete');
+    updateTask({
+      variables: {
+        id: currentTask.id,
+        status: 'done',
+      },
+    });
+  };
+  const markTaskAsPayed = () => {
+    console.log('mark task as payed');
+    updateTask({
+      variables: {
+        id: currentTask.id,
+        isPaymentDone: true,
+      },
+    });
+  };
+
   console.log('currentTask', currentTask);
 
   return (
     <StyledDiv>
-      {currentTask && currentTask.id ? (
-        <div className="task-details">
-          <h2>Task Details</h2>
-          <Row>
-            <Col span={8} className="field-name">
-              ID
-            </Col>
-            <Col className="field-details">{currentTask.id}</Col>
-          </Row>
-          <Row>
-            <Col span={8} className="field-name">
-              Created At
-            </Col>
-            <Col className="field-details">
-              {getFormattedTimeFromUnix(currentTask.createdAt as string)}
-            </Col>
-          </Row>
-          <Row>
-            <Col span={8} className="field-name">
-              Due Date
-            </Col>
-            <Col className="field-details">
-              {getFormattedTimeFromUnix(currentTask.dueDate as string)}
-            </Col>
-          </Row>
-          <Row>
-            <Col span={8} className="field-name">
-              Location
-            </Col>
-            <Col className="field-details">{currentTask.location}</Col>
-          </Row>
-          {/* <Row>
+      {loading ? (
+        <StyledLoader />
+      ) : (
+        <div>
+          {currentTask && currentTask.id ? (
+            <div className="task-details">
+              <h2>Task Details</h2>
+              <Row>
+                <Col span={8} className="field-name">
+                  ID
+                </Col>
+                <Col className="field-details">{currentTask.id}</Col>
+              </Row>
+              <Row>
+                <Col span={8} className="field-name">
+                  Created At
+                </Col>
+                <Col className="field-details">
+                  {getFormattedTimeFromUnix(currentTask.createdAt as string)}
+                </Col>
+              </Row>
+              <Row>
+                <Col span={8} className="field-name">
+                  Due Date
+                </Col>
+                <Col className="field-details">
+                  {getFormattedTimeFromUnix(currentTask.dueDate as string)}
+                </Col>
+              </Row>
+              <Row>
+                <Col span={8} className="field-name">
+                  Location
+                </Col>
+                <Col className="field-details">{currentTask.location}</Col>
+              </Row>
+              {/* <Row>
             <Col span={8} className="field-name">
               Pin-code
             </Col>
-            <Col className="field-details">{currentTask.pincode}</Col>
+            <Col loginWithGoogleclassName="field-details">{currentTask.pincode}</Col>
           </Row> */}
-          <Row>
-            <Col span={8} className="field-name">
-              Size
-            </Col>
-            <Col className="field-details">{currentTask.size}</Col>
-            <Tooltip title="This is the approximate time to complete the task. Small(1 hr) Medium(3 hrs) Large(5 hrs)">
-              <div>
-                &nbsp;&nbsp;
-                <FiInfo style={{ marginTop: '0.25em' }} />
-              </div>
-            </Tooltip>
-          </Row>
-          <Row>
-            <Col span={8} className="field-name">
-              Description
-            </Col>
-            <Col className="field-details">{currentTask.description}</Col>
-          </Row>
-          <Row>
-            <Col span={8} className="field-name">
-              Tasker
-            </Col>
-            <Col className="field-details">
-              {/* {currentTask.taskerInContact.firstname}{' '}
+              <Row>
+                <Col span={8} className="field-name">
+                  Size
+                </Col>
+                <Col className="field-details">{currentTask.size}</Col>
+                <Tooltip title="This is the approximate time to complete the task. Small(1 hr) Medium(3 hrs) Large(5 hrs)">
+                  <div>
+                    &nbsp;&nbsp;
+                    <FiInfo style={{ marginTop: '0.25em' }} />
+                  </div>
+                </Tooltip>
+              </Row>
+              <Row>
+                <Col span={8} className="field-name">
+                  Description
+                </Col>
+                <Col className="field-details">{currentTask.description}</Col>
+              </Row>
+              <Row>
+                <Col span={8} className="field-name">
+                  Tasker
+                </Col>
+                <Col className="field-details">
+                  {/* {currentTask.taskerInContact.firstname}{' '}
               {currentTask.taskerInContact.lastname} */}
-            </Col>
-          </Row>
-          <TaskerCard
-            tasker={currentTask.taskerInContact}
-            taskCategory={taskCategory}
-          />
+                </Col>
+              </Row>
+              <TaskerCard
+                tasker={currentTask.taskerInContact}
+                taskCategory={taskCategory}
+              />
 
-          <div className="action-buttons">
-            <button>Mark as Completed</button>
+              <div className="action-buttons">
+                <button
+                  onClick={() => markTaskAsCompleted()}
+                  disabled={currentTask.status === 'done'}
+                  style={{
+                    background:
+                      currentTask.status === 'done' ? '#f5f5f5' : '#fff',
+                  }}
+                >
+                  Task Completed
+                </button>
 
-            <button>Mark as Payed</button>
-          </div>
+                <button
+                  onClick={() => markTaskAsPayed()}
+                  disabled={currentTask.isPaymentDone}
+                  style={{
+                    background: currentTask.isPaymentDone ? '#f5f5f5' : '#fff',
+                  }}
+                >
+                  Payment Completed
+                </button>
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
-      ) : (
-        <></>
       )}
     </StyledDiv>
   );

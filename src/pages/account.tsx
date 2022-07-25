@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { useReactiveVar } from '@apollo/client';
 import { taskerVar, userVar } from 'src/apollo/reactiveVars';
 
-import { Descriptions, Avatar, Menu, Divider, MenuProps } from 'antd';
+import { Descriptions, MenuProps } from 'antd';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
 import React from 'react';

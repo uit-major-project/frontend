@@ -21,7 +21,7 @@ interface Props {
   isProfileDrawerVisible: boolean;
 }
 
-const SUPPORT_EMAIL = 'support@handyservices.in';
+const SUPPORT_EMAIL = 'support@handymanservices.in';
 
 const LogoutModal = styled(Modal)`
   p {

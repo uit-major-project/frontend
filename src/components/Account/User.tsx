@@ -190,8 +190,8 @@ const UserAccount = ({ user }: { user: User }) => {
   const UPDATE_USER = gql`
     mutation updateUser(
       $id: ID!
-      $firstname: String!
-      $lastname: String!
+      $firstname: String
+      $lastname: String
       $email: String
       $image: String
       $phone: String

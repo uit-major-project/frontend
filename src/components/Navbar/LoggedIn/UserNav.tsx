@@ -154,7 +154,7 @@ function UserLoggedInNav({
           </div>
           <div className={'right-panel'}>
             <div className={'items'}>
-              <div
+              {/* <div
                 className={'icon-container'}
                 onClick={() => {
                   showNotificationsDrawer();
@@ -164,7 +164,7 @@ function UserLoggedInNav({
                 tabIndex={0}
               >
                 <StyledIoNotificationsOutline />
-              </div>
+              </div> */}
               {/* <div
                 className={'icon-container'}
                 onClick={() => {

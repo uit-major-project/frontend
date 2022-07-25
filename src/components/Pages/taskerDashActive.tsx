@@ -5,13 +5,12 @@ import Cookies from 'js-cookie';
 import Router from 'next/router';
 // import { useReactiveVar } from '@apollo/client';
 
-// import { userVar } from 'src/apollo/reactiveVars';
 import React from 'react';
 import EmptyDisplay from 'src/components/EmptyDisplay';
 
 // import { RiTodoLine } from 'react-icons/ri';
 import { gql, useQuery, useReactiveVar } from '@apollo/client';
-import { taskerVar, userVar } from 'src/apollo/reactiveVars';
+import { taskerVar } from 'src/apollo/reactiveVars';
 // import { tasks } from 'data/tasks';
 import { MdOutlineTaskAlt, MdSort } from 'react-icons/md';
 
@@ -302,7 +301,7 @@ const TaskerDashActive: NextPage = () => {
   React.useEffect(() => {
     console.log('user', data?.getCurrentUser);
     if (data && data.getCurrentUser) {
-      userVar(data.getCurrentUser);
+      taskerVar(data.getCurrentUser);
     }
   }, [data]);
 
