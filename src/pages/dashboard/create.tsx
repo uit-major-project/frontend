@@ -1,3 +1,5 @@
+/* eslint-disable sonarjs/no-duplicate-string */
+/* eslint-disable sonarjs/cognitive-complexity */
 import type { NextPage } from 'next';
 
 import styled from '@emotion/styled';
@@ -14,11 +16,14 @@ import { gql, useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { userVar, taskCategoryVar, tasksVar } from 'src/apollo/reactiveVars';
 
 import { useForm } from 'react-hook-form';
-import { DatePicker, TimePicker, notification } from 'antd';
-import { StyledLoader } from './active';
+import { DatePicker, TimePicker, notification, Rate, Avatar } from 'antd';
+import { StyledLoader } from '../../components/Loader';
+import { AiOutlineUser } from 'react-icons/ai';
 // import { Task } from 'src/utils/types';
 
 // import { TaskSize } from 'src/utils/types';
+
+// import { TaskCategory } from 'src/components/BookTask';
 
 const StyledDiv = styled.div`
   padding: 3rem;
@@ -93,21 +98,44 @@ const StyledDiv = styled.div`
       justify-content: center;
 
       .tasker-card-top {
+        padding: 1rem;
         width: 100%;
         display: flex;
         justify-content: center;
         margin-bottom: 1rem;
 
+        // .tasker-image {
+        //   width: 30%;
+        //   height: 100%;
+        //   border-radius: 5px;
+        //   background-size: cover;
+        //   background-position: center;
+        //   background-repeat: no-repeat;
+        // }
+
         .tasker-image {
-          width: 30%;
-          height: 100%;
+          width: 20%;
+          max-width: 5em;
+          // width: 10rem;
+          // height: 100%;
+          height: 5em;
           border-radius: 5px;
           background-size: cover;
           background-position: center;
           background-repeat: no-repeat;
+
+          span {
+            width: 100%;
+            height: 100%;
+            svg {
+              width: 100%;
+              height: 100%;
+            }
+          }
         }
         .tasker-details {
-          width: 70%;
+          padding: 0 1.5rem;
+          width: 80%;
           height: 100%;
           display: flex;
           flex-direction: column;
@@ -146,10 +174,10 @@ const StyledDiv = styled.div`
     }
   }
   .time-selector {
-    // display: flex;
-    // flex-direction: column;
-    // align-items: center;
-    // justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     margin-top: 1rem;
 
     h1 {
@@ -157,19 +185,29 @@ const StyledDiv = styled.div`
       font-size: 2rem;
       margin-bottom: 1rem;
     }
-    // antpicker {
-    //   width: 10em;
-    //   max-width: 500px;
-    // }
+    .ant-picker-inputs {
+      .ant-picker {
+        width: 15em;
+        max-width: 500px;
+        padding: 0.5rem;
+        margin: 0.25rem;
+      }
+    }
   }
 
   .action-buttons {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
     button {
+      text-transform: uppercase;
       padding: 0.5em 1em;
       width: 10em;
       border: none;
       border-radius: 0.25em;
-      margin-top: 1em;
+      margin-top: 3em !important;
       color: ${(props) => props.theme.colors.text};
       border: 0.1em solid ${(props) => props.theme.colors.primary};
 
@@ -229,7 +267,7 @@ const TaskDescription = ({
       <div className="form-container">
         <p className="task-category">{taskCategory.toUpperCase()}</p>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <input
+          {/* <input
             type="text"
             {...register('pincode', {
               required: 'Required',
@@ -245,9 +283,9 @@ const TaskDescription = ({
           />
           <br />
           {errors.pincode && errors.pincode.message}
-          <br />
+          <br /> */}
 
-          <input
+          {/* <input
             type="text"
             {...register('address', {
               required: 'Required',
@@ -259,6 +297,24 @@ const TaskDescription = ({
             value={taskDetails.address}
             placeholder="address"
           />
+          <br />
+          {errors.address && errors.address.message} */}
+
+          {/* <br /> */}
+          <select
+            {...register('address', {
+              required: 'Required',
+              validate: (value) =>
+                value !== 'Select zone' || 'Please select your zone',
+            })}
+            defaultValue={taskDetails.address}
+          >
+            <option value={'Select zone'}>Select zone</option>
+            <option value={'Karond'}>Karond</option>
+            <option value={'MPNagar'}>M. P. Nagar</option>
+            <option value={'Gandhinagar'}>Gandhi Nagar</option>
+            <option value={'NewMarket'}>New Market</option>
+          </select>
           <br />
           {errors.address && errors.address.message}
 
@@ -321,7 +377,12 @@ const TaskerSelection = ({
         <div className="tasker-card" key={tasker.id}>
           <div className="tasker-card-top">
             <div className="tasker-image">
-              <img src={tasker.image} alt="tasker" />
+              {/* <img src={tasker.image} alt="tasker" /> */}
+              {tasker.image && tasker.image !== '' ? (
+                <img src={tasker.image} alt="tasker" />
+              ) : (
+                <Avatar size={'large'} icon={<AiOutlineUser />} />
+              )}
             </div>
             <div className="tasker-details">
               <div className="tasker-lead">
@@ -330,16 +391,34 @@ const TaskerSelection = ({
                 </div>
                 <div>Rs.{tasker.pricePerHourInRs ?? 100}/hr</div>
               </div>
-              {tasker.reviews ? (
+              {/* {tasker.ratingCount ? (
                 <p>
-                  {tasker.reviews.length === 1
-                    ? '1 review'
-                    : `${tasker.reviews.length} reviews`}
+                  {tasker.ratingCount === 1
+                    ? '1 rating'
+                    : `${tasker.ratingCount} ratings`}
                 </p>
               ) : (
-                <p>No reviews</p>
+                <p>No ratings</p>
+              )} */}
+              {tasker.ratingCount !== 0 ? (
+                <div>
+                  <Rate defaultValue={tasker.rating} />
+                  <p>
+                    {tasker.ratingCount === 1
+                      ? '1 rating'
+                      : `${tasker.ratingCount} ratings`}
+                  </p>
+                </div>
+              ) : (
+                <div>No ratings</div>
               )}
-              {tasker.tasks ? (
+              <p className="tasker-experience">
+                {tasker.experience > 0
+                  ? `Experience of over ${tasker.experience} years`
+                  : ''}
+              </p>
+              <p>Address: {tasker.permanentAddress}</p>
+              {/* {tasker.tasks ? (
                 <p>
                   {tasker.tasks.length === 1
                     ? `1 ${taskCategory} review`
@@ -347,14 +426,14 @@ const TaskerSelection = ({
                 </p>
               ) : (
                 <p>No {taskCategory} tasks</p>
-              )}
+              )} */}
             </div>
           </div>
           <div className="tasker-card-bottom">
-            <p className="tasker-experience">
+            {/* <p className="tasker-experience">
               {tasker.experience ??
-                'I have over 4 years of experience mounting portraits, paintings and more. I do not currently mount televisions at the moment. 2 hrs min and travel expense may be added depending on distance. I look forward to working with you soon.'}
-            </p>
+                'I have over 4 years of experience for this. I do not currently take order that take more then 5hrs at the moment. 2 hrs min and travel expense may be added depending on distance. I look forward to working with you soon.'}
+            </p> */}
             <button
               onClick={() => {
                 setTaskDetails({
@@ -390,8 +469,10 @@ const TimeSelector = ({
     <div>
       <div className="time-selector">
         <h1>When do you want the task to be completed?</h1>
-        <DatePicker defaultValue={taskDate} onChange={setTaskDate} />
-        <TimePicker defaultValue={taskTime} onChange={setTaskTime} />
+        <div className="ant-picker-inputs">
+          <DatePicker defaultValue={taskDate} onChange={setTaskDate} />
+          <TimePicker defaultValue={taskTime} onChange={setTaskTime} />
+        </div>
       </div>
       <div>
         {/* <button
@@ -419,7 +500,10 @@ const Create: NextPage = () => {
 
   const taskCategory = useReactiveVar(taskCategoryVar);
 
-  const [taskDetails, setTaskDetails] = React.useState<TaskDetails>({});
+  const [taskDetails, setTaskDetails] = React.useState<TaskDetails>({
+    address: 'Select zone',
+    pincode: '',
+  });
 
   const [statedTaskers, setStatedTaskers] = React.useState([]);
 
@@ -443,6 +527,10 @@ const Create: NextPage = () => {
         pricePerHourInRs
         experience
         isActive
+        category
+        area
+        rating
+        ratingCount
       }
     }
   `;
@@ -467,6 +555,15 @@ const Create: NextPage = () => {
       setStatedTaskers(taskers.taskers);
     }
   }, [taskers]);
+
+  // React.useEffect(() => {
+  //   console.log(statedTaskers);
+  //   const taskersForArea = statedTaskers.filter(
+  //     (tasker: any) => tasker.area === taskDetails.address
+  //   );
+  //   console.log('taskersForArea', taskersForArea);
+  //   setStatedTaskers(taskersForArea);
+  // }, [taskDetails.address]);
 
   console.log('taskDetails', taskDetails);
 
@@ -592,6 +689,15 @@ const Create: NextPage = () => {
     return <></>;
   }
 
+  const taskersForArea = statedTaskers.filter(
+    (tasker: any) =>
+      tasker.area === taskDetails.address && tasker.category === taskCategory
+  );
+
+  console.log(taskersForArea);
+  console.log('**************');
+  console.log(statedTaskers);
+
   switch (currentStep) {
     case 1: {
       currentComponent = (
@@ -608,7 +714,7 @@ const Create: NextPage = () => {
     case 2: {
       currentComponent = (
         <TaskerSelection
-          statedTaskers={statedTaskers}
+          statedTaskers={taskersForArea}
           taskCategory={taskCategory}
           taskDetails={taskDetails}
           setTaskDetails={setTaskDetails}

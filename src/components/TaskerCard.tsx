@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import { Avatar } from 'antd';
+import { Avatar, Rate } from 'antd';
 import { AiOutlineUser } from 'react-icons/ai';
-import { BiUserCircle } from 'react-icons/bi';
+// import { BiUserCircle } from 'react-icons/bi';
 
 const StyledDiv = styled.div`
   .tasker-card {
@@ -113,34 +113,34 @@ export const TaskerCard = ({
               </div>
               <div>Rs.{tasker.pricePerHourInRs ?? 100}/hr</div>
             </div>
-            {tasker.reviews ? (
-              <p>
-                {tasker.reviews.length === 1
-                  ? '1 review'
-                  : `${tasker.reviews.length} reviews`}
-              </p>
+            {tasker.ratingCount !== 0 ? (
+              <div>
+                <Rate defaultValue={tasker.rating} />
+                <p>
+                  {tasker.ratingCount === 1
+                    ? '1 rating'
+                    : `${tasker.ratingCount} ratings`}
+                </p>
+              </div>
             ) : (
-              <p>No reviews</p>
+              <div>No ratings</div>
             )}
-            {tasker.tasks ? (
-              <p>
-                {tasker.tasks.length === 1
-                  ? `1 ${taskCategory} review`
-                  : `${tasker.tasks.length} ${taskCategory} tasks`}
-              </p>
-            ) : (
-              <p>No {taskCategory} tasks</p>
-            )}
+            <p className="tasker-experience">
+              {tasker.experience > 0
+                ? `Experience of over ${tasker.experience} years`
+                : ''}
+            </p>
+            <p>Address: {tasker.permanentAddress}</p>
           </div>
         </div>
         <div className="tasker-card-bottom">
-          <p className="tasker-experience">
+          {/* <p className="tasker-experience">
             {tasker.experience === '' ? (
               'I have over 4 years of working experience with these type of tasks. I have good understanding of english language. 2 hrs min and travel expense may be added depending on distance. I look forward to working with you soon.'
             ) : (
               <span>{tasker.experience}</span>
             )}
-          </p>
+          </p> */}
           {/* <button
             onClick={() => {
               setTaskDetails({

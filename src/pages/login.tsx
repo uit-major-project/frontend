@@ -7,7 +7,7 @@ import { gql, useMutation, useReactiveVar } from '@apollo/client';
 import { userVar } from 'src/apollo/reactiveVars';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
-import { StyledLoader } from './dashboard/active';
+import { StyledLoader } from 'src/components/Loader';
 
 // import h2 from '../../public/img/h2.jpg';
 
@@ -106,7 +106,7 @@ const Login: NextPage = () => {
         jwt: credential,
       },
     });
-    localStorage.setItem('token', credential);
+    localStorage.setItem('handy_services_user_token', credential);
     // console.log('type', credential);
 
     // api call to check if user exits

@@ -9,7 +9,7 @@ import { taskerVar } from 'src/apollo/reactiveVars';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
 import React from 'react';
-import { StyledLoader } from './dashboard/active';
+import { StyledLoader } from '../components/Loader';
 
 // import h3 from '../../public/img/h3.jpg';
 
@@ -137,6 +137,7 @@ const BecomeATasker: NextPage = () => {
         jwt: credential,
       },
     });
+    localStorage.setItem('handy_services_tasker_token', credential);
     console.log('type 2', credential);
 
     // api call to check if user exits
@@ -180,7 +181,7 @@ const BecomeATasker: NextPage = () => {
   }, []);
 
   if (Cookies.get('signedin_as_tasker') && tasker?.email) {
-    Router.push('/dashboard/explore');
+    Router.push('/dashboard/active');
   }
 
   return (

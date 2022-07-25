@@ -11,10 +11,10 @@ import { MdOutlineHandyman } from 'react-icons/md';
 import NotificationDrawer from './Drawers/NotificationDrawer';
 // import PreferencesDrawer from '../PreferencesDrawer';
 // import ProfileDrawer from './Drawers/UserProfileDrawer';
-import { User } from 'src/utils/types';
+// import { Tasker } from 'src/utils/types';
 import { Avatar } from 'antd';
 import { AiOutlineUser } from 'react-icons/ai';
-import UserProfileDrawer from './Drawers/UserProfileDrawer';
+import TaskerProfileDrawer from './Drawers/TaskerProfileDrawer';
 
 const StyledTopbar = styled.nav`
   .topbar-container {
@@ -102,12 +102,12 @@ const StyledIoNotificationsOutline = styled(IoNotificationsOutline)`
   height: 1.85em;
 `;
 
-function UserLoggedInNav({
-  user,
+function TaskerLoggedInNav({
+  tasker,
   className,
   title,
 }: {
-  user: User;
+  tasker: any;
   className?: string;
   title: string;
 }): JSX.Element {
@@ -130,6 +130,10 @@ function UserLoggedInNav({
   const notificationsDrawerClose = () => {
     setIsNotificationsDrawerVisible(false);
   };
+
+  console.log(tasker);
+
+  const taskerObj = tasker.tasker;
 
   // preferences drawer
   // const [isPreferencesDrawerVisible, setIsPreferencesDrawerVisible] =
@@ -191,8 +195,8 @@ function UserLoggedInNav({
                   src={user.image}
                   alt="avatar"
                 /> */}
-                {user.image && user.image !== '' ? (
-                  <img src={user.image} alt="avatar" />
+                {taskerObj.image && taskerObj.image !== '' ? (
+                  <img src={taskerObj.image} alt="avatar" />
                 ) : (
                   <Avatar size={'large'} icon={<AiOutlineUser />} />
                 )}
@@ -210,13 +214,14 @@ function UserLoggedInNav({
           preferencesDrawerClose={preferencesDrawerClose}
           closable={false}
         /> */}
-        <UserProfileDrawer
+        <TaskerProfileDrawer
           isProfileDrawerVisible={isProfileDrawerVisible}
           profileDrawerClose={profileDrawerClose}
+          // tasker={tasker}
         />
       </div>
     </StyledTopbar>
   );
 }
 
-export default UserLoggedInNav;
+export default TaskerLoggedInNav;

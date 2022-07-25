@@ -7,7 +7,7 @@ import { themes } from '../../utils/themes';
 import Navbar from '../Navbar';
 import { gql, useQuery } from '@apollo/client';
 import { userVar } from 'src/apollo/reactiveVars';
-import { StyledLoader } from 'src/pages/dashboard/active';
+import { StyledLoader } from '../Loader';
 
 const StyledMain = styled.main`
   // height: calc(100vh - 5em);
@@ -63,6 +63,8 @@ const MainLayout = (props: Props): JSX.Element => {
             experience
             permanentAddress
             pricePerHourInRs
+            rating
+            ratingCount
           }
 
           size
@@ -77,7 +79,7 @@ const MainLayout = (props: Props): JSX.Element => {
 
   const token =
     typeof window !== 'undefined' && typeof localStorage !== 'undefined'
-      ? localStorage.getItem('token')
+      ? localStorage.getItem('handy_services_user_token')
       : '';
 
   console.log('token', token);

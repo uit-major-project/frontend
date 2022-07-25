@@ -18,13 +18,13 @@ export enum TaskType {
   cleaning = 'cleaning',
   moving = 'moving',
   electrician = 'electrician',
-  mechanic = 'mechanic',
-  mounting = 'mounting',
-  plumber = 'plumber',
   painter = 'painter',
   cook = 'cook',
+  mechanic = 'mechanic',
+  plumber = 'plumber',
   driver = 'driver',
   technician = 'technician',
+  // mounting = 'mounting',
 }
 export enum TaskSize {
   small = 'small',

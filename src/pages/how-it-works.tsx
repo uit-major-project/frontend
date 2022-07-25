@@ -4,7 +4,7 @@
 import type { NextPage } from 'next';
 import styled from '@emotion/styled';
 // import Head from 'next/head';
-import { Carousel } from 'antd';
+// import { Carousel } from 'antd';
 import { MdAddTask } from 'react-icons/md';
 import { IoCheckmarkDone } from 'react-icons/io5';
 import { BsPersonCheck } from 'react-icons/bs';
@@ -66,10 +66,12 @@ const HowItWorks: NextPage = () => {
     <StyledDiv>
       <h1>How it Works</h1>
       <div>
-        Handyman Services is a service provider that helps you Live Smarter;
-        Live Better. With our website get your routine or periodic chores
-        (tasks) done by outsourcing them to our in-house, trained, professional
-        and trusted team of Taskman’s.
+        <p>
+          Handyman Services is a service provider that helps you Live Smarter;
+          Live Better. With our website get your routine or periodic chores
+          (tasks) done by outsourcing them to our in-house, trained,
+          professional and trusted team of Taskman’s.
+        </p>
         <p>
           We provide wide range of doorstep services as per your convenience to
           your complete satisfaction. Our services include electrician, plumber,

@@ -1,10 +1,10 @@
-import { gql, useQuery, useReactiveVar } from '@apollo/client';
+import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { taskCategoryVar, userVar } from 'src/apollo/reactiveVars';
 import { Task, TaskType } from 'src/utils/types';
 import styled from '@emotion/styled';
-import { getFormattedTimeFromUnix } from '../dashboard/active';
+import { getFormattedTimeFromUnix } from 'src/components/Pages/userDashActive';
 
 import { FiInfo } from 'react-icons/fi';
 import { Tooltip, Col, Row } from 'antd';
@@ -144,6 +144,14 @@ const Task = () => {
           </Row>
           <Row>
             <Col span={8} className="field-name">
+              Created At
+            </Col>
+            <Col className="field-details">
+              {getFormattedTimeFromUnix(currentTask.createdAt as string)}
+            </Col>
+          </Row>
+          <Row>
+            <Col span={8} className="field-name">
               Due Date
             </Col>
             <Col className="field-details">
@@ -156,12 +164,12 @@ const Task = () => {
             </Col>
             <Col className="field-details">{currentTask.location}</Col>
           </Row>
-          <Row>
+          {/* <Row>
             <Col span={8} className="field-name">
               Pin-code
             </Col>
             <Col className="field-details">{currentTask.pincode}</Col>
-          </Row>
+          </Row> */}
           <Row>
             <Col span={8} className="field-name">
               Size

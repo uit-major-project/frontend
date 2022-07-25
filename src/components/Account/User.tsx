@@ -23,7 +23,7 @@ import isEqual from 'lodash.isequal';
 import { useForm } from 'react-hook-form';
 import { User } from 'src/utils/types';
 import { gql, useMutation } from '@apollo/client';
-import { StyledLoader } from 'src/pages/dashboard/active';
+import { StyledLoader } from '../Loader';
 
 const StyledDiv = styled.div`
   // background: #efefef;

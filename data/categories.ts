@@ -55,11 +55,11 @@ export const taskTypes = [
     icon: '',
     image: '',
   },
-  {
-    id: 'mounting',
-    name: 'Mounting',
-    description: 'Mounting',
-    icon: '',
-    image: '',
-  },
+  // {
+  //   id: 'mounting',
+  //   name: 'Mounting',
+  //   description: 'Mounting',
+  //   icon: '',
+  //   image: '',
+  // },
 ];

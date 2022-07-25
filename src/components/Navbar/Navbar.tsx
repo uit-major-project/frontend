@@ -1,18 +1,20 @@
+/* eslint-disable unicorn/no-nested-ternary */
 /* eslint-disable @next/next/no-html-link-for-pages */
 import React from 'react';
 import styled from '@emotion/styled';
-import NextLink from 'next/link';
+// import NextLink from 'next/link';
 
-import { CgMenuRight } from 'react-icons/cg';
+// import { CgMenuRight } from 'react-icons/cg';
 import { Drawer } from 'antd';
-import { AiOutlineClose } from 'react-icons/ai';
-import { MdOutlineHandyman } from 'react-icons/md';
+// import { AiOutlineClose } from 'react-icons/ai';
+// import { MdOutlineHandyman } from 'react-icons/md';
 
 import { useReactiveVar } from '@apollo/client';
-import { userVar } from 'src/apollo/reactiveVars';
+import { taskerVar, userVar } from 'src/apollo/reactiveVars';
 import UserLoggedInNav from './LoggedIn/UserNav';
 import CommonNav from './Common/CommonNav';
 import Cookies from 'js-cookie';
+import TaskerLoggedInNav from './LoggedIn/TaskerNav';
 // import Cookies from 'js-cookie';
 
 const StyledNavbar = styled.nav`
@@ -180,15 +182,20 @@ const Navbar = ({ className, title }: Props) => {
 
   const user = useReactiveVar(userVar);
 
+  const tasker = useReactiveVar(taskerVar);
+
   // console.log('isLoggedIn', Cookies.get('signedin'));
 
   // console.log('user', user);
 
+  console.log(Cookies.get('signedin_as_tasker'));
+
   return (
     <StyledNavbar className={className}>
-      {user &&
-      (Cookies.get('signedin') || Cookies.get('signedin_as_tasker')) ? (
+      {user && Cookies.get('signedin') ? (
         <UserLoggedInNav user={user} title="Handy Services" />
+      ) : Cookies.get('signedin_as_tasker') && tasker ? (
+        <TaskerLoggedInNav tasker={tasker} title="Handy Services" />
       ) : (
         <CommonNav title="Handy Services" />
       )}

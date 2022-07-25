@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import { Drawer, Row, Col, Divider, Modal } from 'antd';
 // import { useTheme } from '@emotion/react';
 
-import { userVar } from 'src/apollo/reactiveVars';
+import { taskerVar } from 'src/apollo/reactiveVars';
 import { AiOutlineLogout } from 'react-icons/ai';
 import { BiSupport } from 'react-icons/bi';
 import { logout } from 'src/utils/logoutUtil';
@@ -19,6 +19,7 @@ interface Props {
   children?: JSX.Element;
   profileDrawerClose(): void;
   isProfileDrawerVisible: boolean;
+  // tasker: any;
 }
 
 const SUPPORT_EMAIL = 'support@handyservices.in';
@@ -103,9 +104,11 @@ const StyledDrawer = styled(Drawer)`
   }
 `;
 
-const ProfileDrawer = (props: Props): JSX.Element => {
+const TaskerProfileDrawer = (props: Props): JSX.Element => {
   // Get User
-  const user = useReactiveVar(userVar);
+  const { tasker } = useReactiveVar(taskerVar) as any;
+
+  console.log('tasker', tasker);
 
   // const theme = useTheme();
 
@@ -150,15 +153,15 @@ const ProfileDrawer = (props: Props): JSX.Element => {
               }}
             >
               <Col span={6} className="icon-container">
-                <img src={user?.image} alt="" />
+                <img src={tasker?.image} alt="" />
               </Col>
               <Col span={18}>
                 <div className="menuitem-info">
                   <div className="menuitem-heading">
-                    {user?.firstname} {user?.lastname}
+                    {tasker?.firstname} {tasker?.lastname}
                   </div>
                   <div className="menuitem-desc menuitem-email">
-                    {user?.email}
+                    {tasker?.email}
                   </div>
                 </div>
               </Col>
@@ -167,28 +170,6 @@ const ProfileDrawer = (props: Props): JSX.Element => {
         </div>
 
         <Divider className="avatar-divider" />
-        <div>
-          <NextLink href={'/dashboard/explore'}>
-            <Row
-              align="middle"
-              justify="space-between"
-              className="menuitem"
-              onClick={() => {
-                props.profileDrawerClose();
-              }}
-            >
-              <Col span={6} className="icon-container">
-                <MdAddTask className="icon" />
-              </Col>
-              <Col span={18}>
-                <div className="menuitem-info">
-                  <div className="menuitem-heading">Book a Task</div>
-                </div>
-              </Col>
-            </Row>
-          </NextLink>
-        </div>
-
         {/* <Divider className="avatar-divider" /> */}
         <div>
           <NextLink href={'/dashboard/active'}>
@@ -205,12 +186,35 @@ const ProfileDrawer = (props: Props): JSX.Element => {
               </Col>
               <Col span={18}>
                 <div className="menuitem-info">
-                  <div className="menuitem-heading">My Tasks</div>
+                  <div className="menuitem-heading">Active Tasks</div>
                 </div>
               </Col>
             </Row>
           </NextLink>
         </div>
+
+        <div>
+          <NextLink href={'/dashboard/completed'}>
+            <Row
+              align="middle"
+              justify="space-between"
+              className="menuitem"
+              onClick={() => {
+                props.profileDrawerClose();
+              }}
+            >
+              <Col span={6} className="icon-container">
+                <MdAddTask className="icon" />
+              </Col>
+              <Col span={18}>
+                <div className="menuitem-info">
+                  <div className="menuitem-heading">Completed Task</div>
+                </div>
+              </Col>
+            </Row>
+          </NextLink>
+        </div>
+
         {/* <div>
           <Row
             align="middle"
@@ -295,4 +299,4 @@ const ProfileDrawer = (props: Props): JSX.Element => {
   );
 };
 
-export default ProfileDrawer;
+export default TaskerProfileDrawer;
