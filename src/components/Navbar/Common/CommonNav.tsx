@@ -193,11 +193,11 @@ const CommonNav = ({ className, title }: Props) => {
               Sign up / Log in
             </a>
           </NextLink>
-          <NextLink href="/become-a-tasker">
+          {/* <NextLink href="/become-a-tasker">
             <a href="/become-a-tasker" className="nav-link">
               Become a Tasker
             </a>
-          </NextLink>
+          </NextLink> */}
         </div>
 
         <div className="smallscreen-menu">
@@ -234,7 +234,7 @@ const CommonNav = ({ className, title }: Props) => {
                   Sign up / Log in
                 </a>
               </NextLink>
-              <NextLink href="/become-a-tasker">
+              {/* <NextLink href="/become-a-tasker">
                 <a
                   href="/become-a-tasker"
                   className="nav-link"
@@ -242,7 +242,7 @@ const CommonNav = ({ className, title }: Props) => {
                 >
                   Become a Tasker
                 </a>
-              </NextLink>
+              </NextLink> */}
             </div>
           </StyledDrawer>
         </div>
