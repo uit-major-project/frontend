@@ -6,7 +6,7 @@ dev and prod branch is deployed with github action. Other environments are stale
 
 ```bash
 # clone the repo
-git clone git@github.com:uit-minor-project/frontend.git
+git clone git@github.com:uit-major-project/frontend.git
 
 # go inside cloned directory
 cd frontend
