@@ -24,7 +24,7 @@ function createApolloClient() {
 
   const httpLink = new HttpLink({
     // uri: typeof window === 'undefined' ? `${uri}/api/graphql` : '/api/graphql',
-    uri: `${uri}/graphql`,
+    uri: `${uri}`,
     credentials: 'include',
     // headers: {
     //   authorization: localStorage.getItem('token'),
