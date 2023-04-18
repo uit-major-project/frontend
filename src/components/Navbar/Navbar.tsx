@@ -188,7 +188,7 @@ const Navbar = ({ className, title }: Props) => {
 
   // console.log('user', user);
 
-  console.log(Cookies.get('signedin_as_tasker'));
+  console.log('cookie signedin_as_tasker', Cookies.get('signedin_as_tasker'));
 
   return (
     <StyledNavbar className={className}>

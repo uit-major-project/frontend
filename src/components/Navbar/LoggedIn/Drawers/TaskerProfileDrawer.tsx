@@ -142,7 +142,7 @@ const TaskerProfileDrawer = (props: Props): JSX.Element => {
         placement="right"
         closable={false}
         onClose={props.profileDrawerClose}
-        visible={props.isProfileDrawerVisible}
+        open={props.isProfileDrawerVisible}
       >
         <div className="user">
           <NextLink href={'/account'}>
@@ -286,7 +286,7 @@ const TaskerProfileDrawer = (props: Props): JSX.Element => {
           closeModal={feedbackModalClose}
         /> */}
         <LogoutModal
-          visible={isLogoutModalVisible}
+          open={isLogoutModalVisible}
           onOk={handleLogoutOk}
           onCancel={handleLogoutCancel}
           okText="LOGOUT"

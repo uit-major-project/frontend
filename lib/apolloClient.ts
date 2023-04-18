@@ -17,10 +17,10 @@ function createApolloClient() {
 
   console.log('uri', uri);
 
-  const creds =
-    process.env.NODE_ENV === 'development' ? {} : { credentials: 'include' };
+  // const creds =
+  //   process.env.NODE_ENV === 'development' ? {} : { credentials: 'include' };
 
-  console.log(creds, process.env.NODE_ENV);
+  // console.log(creds, process.env.NODE_ENV);
 
   const httpLink = new HttpLink({
     // uri: typeof window === 'undefined' ? `${uri}/api/graphql` : '/api/graphql',
@@ -34,7 +34,7 @@ function createApolloClient() {
   return new ApolloClient({
     cache: new InMemoryCache(),
     link: httpLink,
-    ssrMode: typeof window === 'undefined',
+    // ssrMode: typeof window === 'undefined',
   });
 }
 

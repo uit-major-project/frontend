@@ -207,7 +207,7 @@ const CommonNav = ({ className, title }: Props) => {
             className="overlay-close"
           />
           <StyledDrawer
-            visible={isMenuVisible}
+            open={isMenuVisible}
             closable={false}
             onClose={() => setIsMenuVisible(false)}
           >
