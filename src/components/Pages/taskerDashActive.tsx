@@ -241,7 +241,7 @@ const TaskerDashActive: NextPage = () => {
   };
 
   const GET_TASKS = gql`
-    query getCurrentUser($jwt: String!) {
+    query getCurrentUser($jwt: String) {
       getCurrentUser(jwt: $jwt) {
         id
         firstname

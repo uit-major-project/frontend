@@ -33,7 +33,7 @@ const MainLayout = (props: Props): JSX.Element => {
   const theme = currentTheme;
 
   const GET_CURRENT_USER = gql`
-    query getCurrentUser($jwt: String!) {
+    query getCurrentUser($jwt: String) {
       getCurrentUser(jwt: $jwt) {
         id
         createdAt
@@ -77,17 +77,22 @@ const MainLayout = (props: Props): JSX.Element => {
     }
   `;
 
-  const token =
-    typeof window !== 'undefined' && typeof localStorage !== 'undefined'
-      ? localStorage.getItem('handy_services_user_token')
-      : '';
+  // const token =
+  //   typeof window !== 'undefined' && typeof localStorage !== 'undefined'
+  //     ? localStorage.getItem('handy_services_user_token')
+  //     : '';
 
-  console.log('token', token);
+  // console.log('token', token);
+
+  // const variables = process.env.NODE_ENV === 'development' ? {
+  //   variables: {
+  //     jwt: process.env.NEXT_PUBLIC_JWT,
+  //   }
+  // } : {};
 
   const { data, error, loading } = useQuery(GET_CURRENT_USER, {
-    variables: {
-      jwt: token ?? '',
-    },
+    // ...variables,
+    fetchPolicy: 'network-only',
   });
 
   if (error) {

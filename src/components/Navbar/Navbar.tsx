@@ -13,9 +13,7 @@ import { useReactiveVar } from '@apollo/client';
 import { taskerVar, userVar } from 'src/apollo/reactiveVars';
 import UserLoggedInNav from './LoggedIn/UserNav';
 import CommonNav from './Common/CommonNav';
-import Cookies from 'js-cookie';
 import TaskerLoggedInNav from './LoggedIn/TaskerNav';
-// import Cookies from 'js-cookie';
 
 const StyledNavbar = styled.nav`
   position: absolute;
@@ -184,17 +182,11 @@ const Navbar = ({ className, title }: Props) => {
 
   const tasker = useReactiveVar(taskerVar);
 
-  // console.log('isLoggedIn', Cookies.get('signedin'));
-
-  // console.log('user', user);
-
-  console.log('cookie signedin_as_tasker', Cookies.get('signedin_as_tasker'));
-
   return (
     <StyledNavbar className={className}>
-      {user && Cookies.get('signedin') ? (
+      {user ? (
         <UserLoggedInNav user={user} title="Handy Services" />
-      ) : Cookies.get('signedin_as_tasker') && tasker ? (
+      ) : tasker ? (
         <TaskerLoggedInNav tasker={tasker} title="Handy Services" />
       ) : (
         <CommonNav title="Handy Services" />

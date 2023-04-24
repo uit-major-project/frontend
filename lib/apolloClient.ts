@@ -1,10 +1,12 @@
 import { useMemo } from 'react';
 import {
   ApolloClient,
-  HttpLink,
+  createHttpLink,
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client';
+
+import { setContext } from '@apollo/client/link/context';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 // const isProduction = process.env.NODE_ENV === 'production';
@@ -15,6 +17,8 @@ function createApolloClient() {
   //   : 'http://localhost:4000';
   const uri = process.env.NEXT_PUBLIC_API_URL;
 
+  console.log('env', process.env.NODE_ENV);
+
   console.log('uri', uri);
 
   // const creds =
@@ -22,18 +26,34 @@ function createApolloClient() {
 
   // console.log(creds, process.env.NODE_ENV);
 
-  const httpLink = new HttpLink({
+  const options = process.env.NODE_ENV === 'development' ? {} : { credentials: 'include' };
+
+  console.log('options', options);
+
+  const httpLink = createHttpLink({
     // uri: typeof window === 'undefined' ? `${uri}/api/graphql` : '/api/graphql',
     uri: `${uri}`,
-    credentials: 'include',
-    // headers: {
-    //   authorization: localStorage.getItem('token'),
-    // },
+    
+    ...options
+  });
+
+  const authLink = setContext((_, { headers }) => {
+    // get the authentication token from local storage if it exists
+    const token = process.env.NEXT_PUBLIC_JWT;
+    // return the headers to the context so httpLink can read them
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : '',
+      },
+    };
   });
 
   return new ApolloClient({
     cache: new InMemoryCache(),
-    link: httpLink,
+    link: process.env.NODE_ENV === 'development' ? authLink.concat(httpLink) : httpLink,
+    // credentials: 'include',
+    // uri
     // ssrMode: typeof window === 'undefined',
   });
 }

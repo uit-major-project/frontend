@@ -8,8 +8,6 @@ import { Drawer } from 'antd';
 import { AiOutlineClose } from 'react-icons/ai';
 import { MdOutlineHandyman } from 'react-icons/md';
 
-// import Cookies from 'js-cookie';
-
 const StyledNavbar = styled.nav`
   position: absolute;
   width: 100%;

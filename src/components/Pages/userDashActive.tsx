@@ -1,7 +1,6 @@
 // import type { NextPage } from 'next';
 
 import styled from '@emotion/styled';
-import Cookies from 'js-cookie';
 import Router from 'next/router';
 // import { useReactiveVar } from '@apollo/client';
 
@@ -230,12 +229,12 @@ function Table({ columns, data }: any) {
 const UserDashActive = () => {
   const user = useReactiveVar(userVar);
   // console.log(user);
-  if (!Cookies.get('signedin') || !user) {
+  if (!user) {
     typeof window !== 'undefined' && Router.push('/login');
   }
 
   // React.useEffect(() => {
-  //   if (!Cookies.get('signedin') && !user) {
+  //   if (!user) {
   //     Router.push('/login');
   //   }
   // }, []);
@@ -246,7 +245,7 @@ const UserDashActive = () => {
   };
 
   const GET_TASKS = gql`
-    query getCurrentUser($jwt: String!) {
+    query getCurrentUser($jwt: String) {
       getCurrentUser(jwt: $jwt) {
         id
         firstname
@@ -285,16 +284,20 @@ const UserDashActive = () => {
     }
   `;
 
-  const token =
-    typeof window !== 'undefined' && typeof localStorage !== 'undefined'
-      ? localStorage.getItem('handy_services_user_token')
-      : '';
+  // const token =
+  //   typeof window !== 'undefined' && typeof localStorage !== 'undefined'
+  //     ? localStorage.getItem('handy_services_user_token')
+  //     : '';
+
+  // const variables = process.env.NODE_ENV === 'development' ? {
+  //   variables: {
+  //     jwt: process.env.NEXT_PUBLIC_JWT,
+  //   }
+  // } : {};
 
   const { data, error, loading } = useQuery(GET_TASKS, {
     fetchPolicy: 'network-only',
-    variables: {
-      jwt: token ?? '',
-    },
+    // ...variables,
   });
 
   if (error) {

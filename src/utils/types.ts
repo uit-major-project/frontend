@@ -1,5 +1,10 @@
 export type Themes = 'dark' | 'light';
 
+export interface Admin {
+  username: string;
+  password: string;
+}
+
 export interface User {
   id: string;
   firstname: string;

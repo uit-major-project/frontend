@@ -7,7 +7,7 @@ import MainLayout from 'src/components/Layout/MainLayout';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps.initialApolloState);
-
+  console.log('HI FROM _app.tsx');
   return (
     <ApolloProvider client={apolloClient}>
       <MainLayout>

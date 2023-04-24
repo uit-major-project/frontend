@@ -6,7 +6,6 @@ import { useReactiveVar } from '@apollo/client';
 import { taskerVar, userVar } from 'src/apollo/reactiveVars';
 
 import { Descriptions, MenuProps } from 'antd';
-import Cookies from 'js-cookie';
 import Router from 'next/router';
 import React from 'react';
 import UserAccount from 'src/components/Account/User';
@@ -73,28 +72,28 @@ const onClick: MenuProps['onClick'] = (e) => {
 };
 
 const Account: NextPage = () => {
-  const person_var = Cookies.get('signedin') ? userVar : taskerVar;
+  const user = useReactiveVar(userVar);
+  // const tasker = useReactiveVar(taskerVar);
+
+  const person_var = user ? userVar : taskerVar;
 
   const person: any = useReactiveVar(person_var as any);
 
   console.log('person', { person });
 
   // React.useEffect(() => {
-  //   if (!Cookies.get('signedin') && !Cookies.get('signedin_as_tasker')) {
+  //   if (!person) {
   //     Router.push('/login');
   //   }
   // }, []);
 
-  if (
-    (!Cookies.get('signedin') && !Cookies.get('signedin_as_tasker')) ||
-    !person
-  ) {
+  if (!person) {
     typeof window !== 'undefined' && Router.push('/login');
   }
 
   return (
     <StyledDiv>
-      {Cookies.get('signedin') ? (
+      {user ? (
         <UserAccount user={person} />
       ) : (
         <TaskerAccount tasker={person?.tasker} />

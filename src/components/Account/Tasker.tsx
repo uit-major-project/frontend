@@ -193,7 +193,7 @@ const TaskerAccount = ({ tasker }: { tasker: Tasker }) => {
                   placeholder="firstname"
                 />
                 <br />
-                {errors.firstname && errors.firstname.message}
+                <>{errors.firstname && errors.firstname.message}</>
 
                 <input
                   type="text"
@@ -208,7 +208,7 @@ const TaskerAccount = ({ tasker }: { tasker: Tasker }) => {
                   placeholder="lastname"
                 />
                 <br />
-                {errors.lastname && errors.lastname.message}
+                <>{errors.lastname && errors.lastname.message}</>
 
                 <input
                   type="email"
@@ -220,7 +220,7 @@ const TaskerAccount = ({ tasker }: { tasker: Tasker }) => {
                   value={tasker?.email}
                 />
                 <br />
-                {errors.email && errors.email.message}
+                <>{errors.email && errors.email.message}</>
 
                 <input
                   type="text"
@@ -235,7 +235,7 @@ const TaskerAccount = ({ tasker }: { tasker: Tasker }) => {
                   placeholder="Your phone number..."
                 />
                 <br />
-                {errors.phone && errors.phone.message}
+                <>{errors.phone && errors.phone.message}</>
 
                 <textarea
                   {...register('address', {
@@ -249,7 +249,7 @@ const TaskerAccount = ({ tasker }: { tasker: Tasker }) => {
                   placeholder="Address..."
                 />
                 <br />
-                {errors.lastname && errors.lastname.message}
+                <>{errors.lastname && errors.lastname.message}</>
 
                 <select
                   {...register('taskCategory', {
@@ -273,7 +273,7 @@ const TaskerAccount = ({ tasker }: { tasker: Tasker }) => {
                   ))}
                 </select>
                 <br />
-                {errors.taskCategory && errors.taskCategory.message}
+                <>{errors.taskCategory && errors.taskCategory.message}</>
 
                 <textarea
                   {...register('experience', {
@@ -287,7 +287,7 @@ const TaskerAccount = ({ tasker }: { tasker: Tasker }) => {
                   placeholder="Your work experience..."
                 />
                 <br />
-                {errors.experience && errors.experience.message}
+                <>{errors.experience && errors.experience.message}</>
 
                 <input
                   type="number"
@@ -302,7 +302,7 @@ const TaskerAccount = ({ tasker }: { tasker: Tasker }) => {
                   placeholder="Hourly Charge (in Rs.)"
                 />
                 <br />
-                {errors.hourlyCharge && errors.hourlyCharge.message}
+                <>{errors.hourlyCharge && errors.hourlyCharge.message}</>
 
                 <br />
                 <button type="submit" disabled={false}>

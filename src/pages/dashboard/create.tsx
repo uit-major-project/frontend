@@ -3,7 +3,7 @@
 import type { NextPage } from 'next';
 
 import styled from '@emotion/styled';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 import Router from 'next/router';
 
 import React from 'react';
@@ -312,7 +312,7 @@ const TaskDescription = ({
             <option value={'NewMarket'}>New Market</option>
           </select>
           <br />
-          {errors.address && errors.address.message}
+          <>{errors.address && errors.address.message}</>
 
           <br />
           <textarea
@@ -324,7 +324,7 @@ const TaskDescription = ({
             value={taskDetails.description}
           />
           <br />
-          {errors.description && errors.description.message}
+          <>{errors.description && errors.description.message}</>
 
           <br />
           <select
@@ -342,7 +342,7 @@ const TaskDescription = ({
             <option value={'large'}>Large</option>
           </select>
           <br />
-          {errors.tasksize && errors.tasksize.message}
+          <>{errors.tasksize && errors.tasksize.message}</>
 
           <br />
           <button type="submit">Continue</button>
@@ -541,7 +541,7 @@ const Create: NextPage = () => {
     console.log('fetching taskers...');
   }
 
-  if ((!Cookies.get('signedin') || !user) && !loading) {
+  if (!user && !loading) {
     typeof window !== 'undefined' && Router.push('/login');
   }
 
@@ -611,8 +611,6 @@ const Create: NextPage = () => {
   const onTaskCreationCompleted = (data: any) => {
     console.log('task created successfully', data);
     // tasksVar([...tasks ]);
-
-    // Cookies.set('signedin', 'true');
 
     Router.push('/dashboard/active');
     openNotification;

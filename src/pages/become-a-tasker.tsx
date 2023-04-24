@@ -6,7 +6,6 @@ import styled from '@emotion/styled';
 import { gql, useMutation, useReactiveVar } from '@apollo/client';
 
 import { taskerVar } from 'src/apollo/reactiveVars';
-import Cookies from 'js-cookie';
 import Router from 'next/router';
 import React from 'react';
 import { StyledLoader } from '../components/Loader';
@@ -85,20 +84,18 @@ const onCompleted = (data: any) => {
 
   console.log('tasker data', data);
 
-  Cookies.set('signedin_as_tasker', 'true');
-
   Router.push('/account');
 };
 
 const BecomeATasker: NextPage = () => {
   const tasker = useReactiveVar(taskerVar);
 
-  if (Cookies.get('signedin_as_tasker') && tasker?.email) {
+  if (tasker?.email) {
     Router.push('/account');
   }
 
   const LOGIN_WITH_GOOGLE = gql`
-    mutation taskerLoginWithGoogle($jwt: String!) {
+    mutation taskerLoginWithGoogle($jwt: String) {
       taskerLoginWithGoogle(jwt: $jwt) {
         tasker {
           id
@@ -180,7 +177,7 @@ const BecomeATasker: NextPage = () => {
     document.querySelector('head')?.appendChild(script);
   }, []);
 
-  if (Cookies.get('signedin_as_tasker') && tasker?.email) {
+  if (tasker?.email) {
     Router.push('/dashboard/active');
   }
 

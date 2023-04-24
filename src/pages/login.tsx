@@ -5,7 +5,6 @@ import styled from '@emotion/styled';
 import { gql, useMutation, useReactiveVar } from '@apollo/client';
 
 import { userVar } from 'src/apollo/reactiveVars';
-import Cookies from 'js-cookie';
 import Router from 'next/router';
 import { StyledLoader } from 'src/components/Loader';
 
@@ -68,8 +67,6 @@ const StyledDiv = styled.div`
 const onCompleted = (data: any) => {
   userVar(data.loginWithGoogle);
 
-  Cookies.set('signedin', 'true');
-
   Router.push('/dashboard/explore');
 };
 
@@ -77,7 +74,7 @@ const Login: NextPage = () => {
   const user = useReactiveVar(userVar);
 
   const LOGIN_WITH_GOOGLE = gql`
-    mutation loginWithGoogle($jwt: String!) {
+    mutation loginWithGoogle($jwt: String) {
       loginWithGoogle(jwt: $jwt) {
         id
         firstname
@@ -106,7 +103,7 @@ const Login: NextPage = () => {
         jwt: credential,
       },
     });
-    localStorage.setItem('handy_services_user_token', credential);
+    // localStorage.setItem('handy_services_user_token', credential);
     // console.log('type', credential);
 
     // api call to check if user exits
@@ -149,7 +146,7 @@ const Login: NextPage = () => {
     document.querySelector('head')?.appendChild(script);
   }, []);
 
-  if (Cookies.get('signedin') && user?.email) {
+  if (user?.email) {
     Router.push('/dashboard/explore');
   }
 
