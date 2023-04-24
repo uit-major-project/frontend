@@ -300,7 +300,7 @@ const UserAccount = ({ user }: { user: User }) => {
                     placeholder="firstname"
                   />
                   <br />
-                  {errors.firstname && errors.firstname.message}
+                  <>{errors.firstname && errors.firstname.message}</>
 
                   <input
                     type="text"
@@ -315,7 +315,7 @@ const UserAccount = ({ user }: { user: User }) => {
                     placeholder="lastname"
                   />
                   <br />
-                  {errors.lastname && errors.lastname.message}
+                  <>{errors.lastname && errors.lastname.message}</>
 
                   <input
                     type="email"
@@ -327,7 +327,7 @@ const UserAccount = ({ user }: { user: User }) => {
                     defaultValue={userDetails?.email}
                   />
                   <br />
-                  {errors.email && errors.email.message}
+                  <>{errors.email && errors.email.message}</>
 
                   <input
                     type="text"
@@ -342,7 +342,7 @@ const UserAccount = ({ user }: { user: User }) => {
                     placeholder="Your phone number..."
                   />
                   <br />
-                  {errors.phone && errors.phone.message}
+                  <>{errors.phone && errors.phone.message}</>
 
                   <textarea
                     {...register('address', {
@@ -356,7 +356,7 @@ const UserAccount = ({ user }: { user: User }) => {
                     placeholder="Address..."
                   />
                   <br />
-                  {errors.lastname && errors.lastname.message}
+                  <>{errors.lastname && errors.lastname.message}</>
 
                   <br />
                   <button

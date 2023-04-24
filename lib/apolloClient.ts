@@ -26,15 +26,16 @@ function createApolloClient() {
 
   // console.log(creds, process.env.NODE_ENV);
 
-  const options = process.env.NODE_ENV === 'development' ? {} : { credentials: 'include' };
+  const options =
+    process.env.NODE_ENV === 'development' ? {} : { credentials: 'include' };
 
   console.log('options', options);
 
   const httpLink = createHttpLink({
     // uri: typeof window === 'undefined' ? `${uri}/api/graphql` : '/api/graphql',
     uri: `${uri}`,
-    
-    ...options
+
+    ...options,
   });
 
   const authLink = setContext((_, { headers }) => {
@@ -51,7 +52,10 @@ function createApolloClient() {
 
   return new ApolloClient({
     cache: new InMemoryCache(),
-    link: process.env.NODE_ENV === 'development' ? authLink.concat(httpLink) : httpLink,
+    link:
+      process.env.NODE_ENV === 'development'
+        ? authLink.concat(httpLink)
+        : httpLink,
     // credentials: 'include',
     // uri
     // ssrMode: typeof window === 'undefined',
