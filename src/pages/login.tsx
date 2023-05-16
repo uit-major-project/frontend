@@ -74,7 +74,7 @@ const Login: NextPage = () => {
   const user = useReactiveVar(userVar);
 
   const LOGIN_WITH_GOOGLE = gql`
-    mutation loginWithGoogle($jwt: String) {
+    mutation loginWithGoogle($jwt: String!) {
       loginWithGoogle(jwt: $jwt) {
         id
         firstname

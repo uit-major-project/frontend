@@ -104,7 +104,7 @@ const getStatusTagColor = (status: string) => {
   switch (status) {
     case 'open':
       return 'blue';
-    case 'in-progress':
+    case 'in_progress':
       return 'cyan';
     case 'completed':
       return 'green';

@@ -183,6 +183,13 @@ function Table({ columns, data }: any) {
                   //   cell.value
                   // );
                   if (cellHeader === 'Tasker') {
+                    if (!cell.value) {
+                      return (
+                        <td {...cell.getCellProps()} key={index}>
+                          <span>Not assigned yet</span>
+                        </td>
+                      );
+                    }
                     return (
                       <td {...cell.getCellProps()} key={index}>
                         <span>
@@ -205,7 +212,12 @@ function Table({ columns, data }: any) {
                   if (cellHeader === 'Status') {
                     return (
                       <td {...cell.getCellProps()} key={index}>
-                        <Tag color={getStatusTagColor(cell.value)}>
+                        <Tag
+                          style={{
+                            textTransform: 'uppercase',
+                          }}
+                          color={getStatusTagColor(cell.value)}
+                        >
                           {cell.value}
                         </Tag>
                       </td>

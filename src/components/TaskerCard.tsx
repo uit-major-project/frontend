@@ -95,6 +95,32 @@ export const TaskerCard = ({
   taskCategory: any;
 }) => {
   console.log('tasker card', tasker, taskCategory);
+  // if the tasker has not been assigned to this task yet, then display that message
+  if (tasker === null) {
+    return (
+      <StyledDiv>
+        <div className="tasker-card">
+          <div className="tasker-card-top">
+            <div className="tasker-image">
+              <Avatar size={'large'} icon={<AiOutlineUser />} />
+            </div>
+            <div className="tasker-details">
+              <div className="tasker-lead">
+                <div className="name">No tasker assigned yet</div>
+              </div>
+            </div>
+          </div>
+          <div className="tasker-card-bottom">
+            <p className="tasker-experience">
+              We are looking for the best tasker for this task. Please check
+              back later.
+            </p>
+          </div>
+        </div>
+      </StyledDiv>
+    );
+  }
+
   return (
     <StyledDiv>
       <div className="tasker-card" key={tasker.id}>

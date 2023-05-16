@@ -14,7 +14,7 @@ import { userVar, taskCategoryVar } from 'src/apollo/reactiveVars';
 import { useForm } from 'react-hook-form';
 import { DatePicker, TimePicker, notification, Rate, Avatar } from 'antd';
 import { StyledLoader } from '../../components/Loader';
-import { AiOutlineUser } from 'react-icons/ai';
+// import { AiOutlineUser } from 'react-icons/ai';
 // import { Task } from 'src/utils/types';
 
 // import { TaskSize } from 'src/utils/types';
@@ -352,101 +352,101 @@ const TaskDescription = ({
   );
 };
 
-const TaskerSelection = ({
-  statedTaskers,
-  taskCategory,
-  next,
-  taskDetails,
-  setTaskDetails,
-}: {
-  statedTaskers: any;
-  taskCategory: string;
-  next: () => void;
-  taskDetails: TaskDetails;
-  setTaskDetails: (taskDetails: TaskDetails) => void;
-}) => {
-  return (
-    <div className="tasker-cards-container">
-      <h2>Tasker Selection</h2>
-      <p>Available taskers : {statedTaskers.length}</p>
-      {statedTaskers.map((tasker: any) => (
-        <div className="tasker-card" key={tasker.id}>
-          <div className="tasker-card-top">
-            <div className="tasker-image">
-              {/* <img src={tasker.image} alt="tasker" /> */}
-              {tasker.image && tasker.image !== '' ? (
-                <img src={tasker.image} alt="tasker" />
-              ) : (
-                <Avatar size={'large'} icon={<AiOutlineUser />} />
-              )}
-            </div>
-            <div className="tasker-details">
-              <div className="tasker-lead">
-                <div>
-                  {tasker.firstname} {tasker.lastname}
-                </div>
-                <div>Rs.{tasker.pricePerHourInRs ?? 100}/hr</div>
-              </div>
-              {/* {tasker.ratingCount ? (
-                <p>
-                  {tasker.ratingCount === 1
-                    ? '1 rating'
-                    : `${tasker.ratingCount} ratings`}
-                </p>
-              ) : (
-                <p>No ratings</p>
-              )} */}
-              {tasker.ratingCount !== 0 ? (
-                <div>
-                  <Rate defaultValue={tasker.rating} />
-                  <p>
-                    {tasker.ratingCount === 1
-                      ? '1 rating'
-                      : `${tasker.ratingCount} ratings`}
-                  </p>
-                </div>
-              ) : (
-                <div>No ratings</div>
-              )}
-              <p className="tasker-experience">
-                {tasker.experience > 0
-                  ? `Experience of over ${tasker.experience} years`
-                  : ''}
-              </p>
-              <p>Address: {tasker.permanentAddress}</p>
-              {/* {tasker.tasks ? (
-                <p>
-                  {tasker.tasks.length === 1
-                    ? `1 ${taskCategory} review`
-                    : `${tasker.tasks.length} ${taskCategory} tasks`}
-                </p>
-              ) : (
-                <p>No {taskCategory} tasks</p>
-              )} */}
-            </div>
-          </div>
-          <div className="tasker-card-bottom">
-            {/* <p className="tasker-experience">
-              {tasker.experience ??
-                'I have over 4 years of experience for this. I do not currently take order that take more then 5hrs at the moment. 2 hrs min and travel expense may be added depending on distance. I look forward to working with you soon.'}
-            </p> */}
-            <button
-              onClick={() => {
-                setTaskDetails({
-                  ...taskDetails,
-                  taskerInContact: tasker.email,
-                });
-                next();
-              }}
-            >
-              Select and Continue
-            </button>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
+// const TaskerSelection = ({
+//   statedTaskers,
+//   taskCategory,
+//   next,
+//   taskDetails,
+//   setTaskDetails,
+// }: {
+//   statedTaskers: any;
+//   taskCategory: string;
+//   next: () => void;
+//   taskDetails: TaskDetails;
+//   setTaskDetails: (taskDetails: TaskDetails) => void;
+// }) => {
+//   return (
+//     <div className="tasker-cards-container">
+//       <h2>Tasker Selection</h2>
+//       <p>Available taskers : {statedTaskers.length}</p>
+//       {statedTaskers.map((tasker: any) => (
+//         <div className="tasker-card" key={tasker.id}>
+//           <div className="tasker-card-top">
+//             <div className="tasker-image">
+//               {/* <img src={tasker.image} alt="tasker" /> */}
+//               {tasker.image && tasker.image !== '' ? (
+//                 <img src={tasker.image} alt="tasker" />
+//               ) : (
+//                 <Avatar size={'large'} icon={<AiOutlineUser />} />
+//               )}
+//             </div>
+//             <div className="tasker-details">
+//               <div className="tasker-lead">
+//                 <div>
+//                   {tasker.firstname} {tasker.lastname}
+//                 </div>
+//                 <div>Rs.{tasker.pricePerHourInRs ?? 100}/hr</div>
+//               </div>
+//               {/* {tasker.ratingCount ? (
+//                 <p>
+//                   {tasker.ratingCount === 1
+//                     ? '1 rating'
+//                     : `${tasker.ratingCount} ratings`}
+//                 </p>
+//               ) : (
+//                 <p>No ratings</p>
+//               )} */}
+//               {tasker.ratingCount !== 0 ? (
+//                 <div>
+//                   <Rate defaultValue={tasker.rating} />
+//                   <p>
+//                     {tasker.ratingCount === 1
+//                       ? '1 rating'
+//                       : `${tasker.ratingCount} ratings`}
+//                   </p>
+//                 </div>
+//               ) : (
+//                 <div>No ratings</div>
+//               )}
+//               <p className="tasker-experience">
+//                 {tasker.experience > 0
+//                   ? `Experience of over ${tasker.experience} years`
+//                   : ''}
+//               </p>
+//               <p>Address: {tasker.permanentAddress}</p>
+//               {/* {tasker.tasks ? (
+//                 <p>
+//                   {tasker.tasks.length === 1
+//                     ? `1 ${taskCategory} review`
+//                     : `${tasker.tasks.length} ${taskCategory} tasks`}
+//                 </p>
+//               ) : (
+//                 <p>No {taskCategory} tasks</p>
+//               )} */}
+//             </div>
+//           </div>
+//           <div className="tasker-card-bottom">
+//             {/* <p className="tasker-experience">
+//               {tasker.experience ??
+//                 'I have over 4 years of experience for this. I do not currently take order that take more then 5hrs at the moment. 2 hrs min and travel expense may be added depending on distance. I look forward to working with you soon.'}
+//             </p> */}
+//             <button
+//               onClick={() => {
+//                 setTaskDetails({
+//                   ...taskDetails,
+//                   taskerInContact: tasker.email,
+//                 });
+//                 next();
+//               }}
+//             >
+//               Select and Continue
+//             </button>
+//           </div>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// };
 
 const TimeSelector = ({
   // next,
@@ -501,56 +501,56 @@ const Create: NextPage = () => {
     pincode: '',
   });
 
-  const [statedTaskers, setStatedTaskers] = React.useState([]);
+  // const [statedTaskers, setStatedTaskers] = React.useState([]);
 
   const [taskDate, setTaskDate] = React.useState<any>();
 
   const [taskTime, setTaskTime] = React.useState<any>();
 
-  const GET_TASKERS = gql`
-    query taskers {
-      taskers {
-        id
-        firstname
-        lastname
-        email
-        image
-        pincode
-        phone
-        permanentAddress
-        isVerified
-        hasPaidOneTimeFee
-        pricePerHourInRs
-        experience
-        isActive
-        category
-        area
-        rating
-        ratingCount
-      }
-    }
-  `;
+  // const GET_TASKERS = gql`
+  //   query taskers {
+  //     taskers {
+  //       id
+  //       firstname
+  //       lastname
+  //       email
+  //       image
+  //       pincode
+  //       phone
+  //       permanentAddress
+  //       isVerified
+  //       hasPaidOneTimeFee
+  //       pricePerHourInRs
+  //       experience
+  //       isActive
+  //       category
+  //       area
+  //       rating
+  //       ratingCount
+  //     }
+  //   }
+  // `;
 
-  const { data: taskers, error, loading } = useQuery(GET_TASKERS);
+  // const { data: taskers, error, loading } = useQuery(GET_TASKERS);
 
-  if (error) {
-    console.error('error fetching tasks user', error);
-  }
+  // if (error) {
+  //   console.error('error fetching tasks user', error);
+  // }
 
-  if (loading) {
-    console.log('fetching taskers...');
-  }
+  // if (loading) {
+  //   console.log('fetching taskers...');
+  // }
 
-  if (!user && !loading) {
+  if (!user) {
     typeof window !== 'undefined' && Router.push('/login');
   }
 
-  React.useEffect(() => {
-    console.log('taskers', taskers?.taskers);
-    if (taskers && taskers.taskers) {
-      setStatedTaskers(taskers.taskers);
-    }
-  }, [taskers]);
+  // React.useEffect(() => {
+  //   console.log('taskers', taskers?.taskers);
+  //   if (taskers && taskers.taskers) {
+  //     setStatedTaskers(taskers.taskers);
+  //   }
+  // }, [taskers]);
 
   // React.useEffect(() => {
   //   console.log(statedTaskers);
@@ -580,7 +580,7 @@ const Create: NextPage = () => {
       $location: String!
       $pincode: String!
       $userEmail: String!
-      $taskerInContactEmail: String!
+      # $taskerInContactEmail: String!
       $size: TaskSize!
       $category: TaskCategory!
     ) {
@@ -590,7 +590,7 @@ const Create: NextPage = () => {
         location: $location
         pincode: $pincode
         userEmail: $userEmail
-        taskerInContactEmail: $taskerInContactEmail
+        # taskerInContactEmail: $taskerInContactEmail
         size: $size
         category: $category
       ) {
@@ -625,8 +625,8 @@ const Create: NextPage = () => {
 
   console.log({ taskError, taskLoading, taskData });
 
-  if (error) {
-    console.error('TASKER LOGIN ERROR', error);
+  if (taskError) {
+    console.error('TASK CREATION ERROR', taskError);
   }
 
   const handleFormSubmit = () => {
@@ -651,7 +651,7 @@ const Create: NextPage = () => {
         location: taskDetails.address,
         pincode: taskDetails.pincode,
         userEmail: user?.email,
-        taskerInContactEmail: taskDetails.taskerInContact,
+        // taskerInContactEmail: taskDetails.taskerInContact,
         size: taskDetails.tasksize,
         category: taskCategory,
       },
@@ -683,14 +683,14 @@ const Create: NextPage = () => {
     return <></>;
   }
 
-  const taskersForArea = statedTaskers.filter(
-    (tasker: any) =>
-      tasker.area === taskDetails.address && tasker.category === taskCategory
-  );
+  // const taskersForArea = statedTaskers.filter(
+  //   (tasker: any) =>
+  //     tasker.area === taskDetails.address && tasker.category === taskCategory
+  // );
 
-  console.log(taskersForArea);
-  console.log('**************');
-  console.log(statedTaskers);
+  // console.log(taskersForArea);
+  // console.log('**************');
+  // console.log(statedTaskers);
 
   switch (currentStep) {
     case 1: {
@@ -705,20 +705,20 @@ const Create: NextPage = () => {
 
       break;
     }
-    case 2: {
-      currentComponent = (
-        <TaskerSelection
-          statedTaskers={taskersForArea}
-          taskCategory={taskCategory}
-          taskDetails={taskDetails}
-          setTaskDetails={setTaskDetails}
-          next={next}
-        />
-      );
+    // case 2: {
+    //   currentComponent = (
+    //     <TaskerSelection
+    //       statedTaskers={taskersForArea}
+    //       taskCategory={taskCategory}
+    //       taskDetails={taskDetails}
+    //       setTaskDetails={setTaskDetails}
+    //       next={next}
+    //     />
+    //   );
 
-      break;
-    }
-    case 3: {
+    //   break;
+    // }
+    case 2: {
       currentComponent = (
         <TimeSelector
           taskDate={taskDate}
@@ -730,7 +730,7 @@ const Create: NextPage = () => {
 
       break;
     }
-    case 4: {
+    case 3: {
       currentComponent = Confirmation;
 
       break;
@@ -739,7 +739,7 @@ const Create: NextPage = () => {
     default:
   }
 
-  const steps = [1, 1, 1, 1];
+  const steps = [1, 1, 1];
 
   // const bookingAction = {
   //   href: '/dashboard/explore',
@@ -751,7 +751,7 @@ const Create: NextPage = () => {
 
   return (
     <StyledDiv>
-      {loading || taskLoading ? (
+      {taskLoading ? (
         <StyledLoader />
       ) : (
         <div>
